@@ -1,25 +1,29 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 import { pageMetadata } from "@/lib/seo/metadata";
-import { GraduationCap } from "lucide-react";
-
+import { Button } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/ui/section";
-import { Card } from "@/components/ui/card";
+import { EducationList } from "@/components/public/education-list";
+import { CertificationsList } from "@/components/public/certifications-list";
 import { EmptyState } from "@/components/public/empty-state";
+import { FadeUp } from "@/components/motion/reveal";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
-import { formatDateRange } from "@/lib/utils";
-import { getEducation } from "@/lib/queries";
-
+import { getEducation, getCertifications } from "@/lib/queries";
 
 export const metadata: Metadata = pageMetadata({
   path: "/education",
   title: "Formation",
   description:
-    "Diplômes et formations complémentaires.",
+    "Parcours académique, diplômes et certifications de KOM MBOUME PIERRE RAOUL.",
 });
 
 export default async function EducationPage() {
-  const education = await getEducation();
+  const [education, certifications] = await Promise.all([
+    getEducation(),
+    getCertifications(),
+  ]);
 
   return (
     <>
@@ -31,34 +35,33 @@ export default async function EducationPage() {
       />
       <Section>
         <Container className="max-w-3xl">
-          <SectionHeading eyebrow="Formation" title="Diplômes & formations" />
-          <div className="mt-10 space-y-4">
+          <FadeUp>
+            <SectionHeading
+              eyebrow="formation"
+              title="Parcours académique"
+              description="Diplômes, cursus et certifications."
+            />
+          </FadeUp>
+
+          <div className="mt-10">
             {education.length > 0 ? (
-              education.map((e) => (
-                <Card key={e.id} className="flex gap-4 p-6">
-                  <div className="bg-primary/10 text-primary flex size-11 shrink-0 items-center justify-center rounded-lg">
-                    <GraduationCap className="size-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{e.degree}</h3>
-                    <p className="text-muted-foreground text-sm">
-                      {e.institution}
-                      {e.field ? ` · ${e.field}` : ""}
-                    </p>
-                    <p className="text-muted-foreground mt-0.5 text-xs">
-                      {formatDateRange(e.startDate, e.endDate)}
-                      {e.location ? ` · ${e.location}` : ""}
-                    </p>
-                    {e.description && (
-                      <p className="mt-2 text-sm text-pretty">{e.description}</p>
-                    )}
-                  </div>
-                </Card>
-              ))
+              <EducationList items={education} />
             ) : (
-              <EmptyState message="Les formations seront bientôt disponibles." />
+              <EmptyState message="Le parcours académique sera bientôt disponible." />
             )}
           </div>
+
+          {certifications.length > 0 && (
+            <div className="mt-16">
+              <h2 className="mono-eyebrow mb-6">{"// certifications"}</h2>
+              <CertificationsList items={certifications} />
+              <Button asChild variant="link" className="mt-4 px-0 font-mono">
+                <Link href="/certifications">
+                  toutes les certifications <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+          )}
         </Container>
       </Section>
     </>

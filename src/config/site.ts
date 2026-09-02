@@ -16,6 +16,7 @@ export const publicNav = [
   { label: "Projets", href: "/projects" },
   { label: "Compétences", href: "/skills" },
   { label: "Expérience", href: "/experience" },
+  { label: "Formation", href: "/education" },
   { label: "Services", href: "/services" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },

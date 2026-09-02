@@ -6,12 +6,15 @@ import { getPublishedProjects } from "@/lib/queries";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const staticEntries: MetadataRoute.Sitemap = publicNav.map((item) => ({
-    url: `${siteConfig.url}${item.href === "/" ? "" : item.href}`,
-    lastModified: now,
-    changeFrequency: item.href === "/" ? "weekly" : "monthly",
-    priority: item.href === "/" ? 1 : 0.7,
-  }));
+  const paths = [...publicNav.map((i) => i.href), "/certifications", "/resume"];
+  const staticEntries: MetadataRoute.Sitemap = Array.from(new Set(paths)).map(
+    (href) => ({
+      url: `${siteConfig.url}${href === "/" ? "" : href}`,
+      lastModified: now,
+      changeFrequency: href === "/" ? "weekly" : "monthly",
+      priority: href === "/" ? 1 : 0.7,
+    }),
+  );
 
   let projectEntries: MetadataRoute.Sitemap = [];
   try {
