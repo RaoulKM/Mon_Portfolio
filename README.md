@@ -149,10 +149,45 @@ src/
 prisma/                  # schema.prisma + seed.ts
 ```
 
-## Prochaines phases
+## Phase 6 — Production
 
-- **Phase 2** — Portfolio public (contenu réel des sections)
-- **Phase 3** — Dashboard (CRUD complet, médias, settings)
-- **Phase 4** — Analytics (tracking, graphiques)
-- **Phase 5** — SEO & performance
-- **Phase 6** — Tests, Docker, CI/CD, déploiement
+### Tests
+
+```bash
+npm test            # Vitest — 33 tests unitaires (lib pures)
+npm run test:watch
+npm run test:e2e    # Playwright — parcours visiteur + garde admin + /api/health
+```
+
+`npm run test:e2e` démarre un serveur (`next dev`, ou `next start` si
+`E2E_START=1`) ; pointe `E2E_BASE_URL` sur un serveur déjà lancé pour l'éviter.
+Installe le navigateur une fois : `npx playwright install chromium`.
+
+### Docker
+
+```bash
+docker compose up -d --build     # app (image standalone) + PostgreSQL
+docker compose up -d postgres    # base seule, app en `npm run dev`
+```
+
+`Dockerfile` multi-stage (`node:22-alpine`, sortie `standalone`, user non-root,
+`HEALTHCHECK` sur `/api/health`). Au démarrage : `prisma migrate deploy` puis
+`node server.js`. L'`AUTH_SECRET` doit être fourni (shell ou fichier `.env`).
+
+### CI — `.github/workflows/ci.yml`
+
+| Job | Étapes |
+| --- | --- |
+| **quality** | install · `prisma generate` · lint · typecheck · `npm test` · `next build` |
+| **e2e** | service PostgreSQL · `migrate deploy` · `db:seed` · `playwright install` · build · `test:e2e` |
+| **docker** | `docker build` (cache GHA) |
+
+### Déploiement
+
+- **Vercel** : connecter le repo, définir `DATABASE_URL` (Postgres managé),
+  `AUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `STORAGE_PROVIDER` + creds Cloudinary.
+  Migrations : `npx prisma migrate deploy` en build command ou via un job.
+- **VPS / Docker** : `docker compose up -d --build`, reverse-proxy (Caddy/Nginx)
+  vers le port 3000, `AUTH_SECRET` dans l'environnement.
+- **Monitoring** : `GET /api/health` renvoie `{ status, db }` (200 si la base
+  répond) — à brancher sur un uptime-checker.

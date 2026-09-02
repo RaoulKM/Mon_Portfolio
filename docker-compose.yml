@@ -1,8 +1,7 @@
-# Optional local infrastructure (spec §55).
-# The app also runs against any locally-installed PostgreSQL — this file is
-# only a convenience for contributors without one.
+# Full local stack (spec §55).
 #
-#   docker compose up -d
+#   docker compose up -d --build        # app + postgres
+#   docker compose up -d postgres       # database only (run the app with `npm run dev`)
 #
 services:
   postgres:
@@ -23,5 +22,31 @@ services:
       timeout: 5s
       retries: 5
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mon_portfolio_app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/mon_portfolio?schema=public"
+      AUTH_SECRET: "${AUTH_SECRET:?set AUTH_SECRET in your shell or an .env file}"
+      NEXT_PUBLIC_SITE_URL: "${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}"
+      STORAGE_PROVIDER: "${STORAGE_PROVIDER:-local}"
+      CLOUDINARY_CLOUD_NAME: "${CLOUDINARY_CLOUD_NAME:-}"
+      CLOUDINARY_API_KEY: "${CLOUDINARY_API_KEY:-}"
+      CLOUDINARY_API_SECRET: "${CLOUDINARY_API_SECRET:-}"
+      CLOUDINARY_FOLDER: "${CLOUDINARY_FOLDER:-portfolio}"
+      EMAIL_FROM: "${EMAIL_FROM:-no-reply@localhost}"
+    volumes:
+      # persist local-disk uploads when STORAGE_PROVIDER=local
+      - uploads:/app/public/uploads
+
 volumes:
   pgdata:
+  uploads:
