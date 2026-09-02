@@ -1,10 +1,16 @@
 import Link from "next/link";
-import { LogOut, ExternalLink } from "lucide-react";
+import { LogOut, ExternalLink, Mail } from "lucide-react";
 
 import { signOut } from "@/lib/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-export function AdminTopbar({ email }: { email?: string | null }) {
+export function AdminTopbar({
+  email,
+  unreadMessages = 0,
+}: {
+  email?: string | null;
+  unreadMessages?: number;
+}) {
   return (
     <header className="border-border bg-background/70 sticky top-0 z-30 flex h-16 items-center justify-between border-b px-4 backdrop-blur-xl md:px-6">
       <div className="text-muted-foreground font-mono text-xs">
@@ -13,6 +19,18 @@ export function AdminTopbar({ email }: { email?: string | null }) {
         <span className="animate-blink">_</span>
       </div>
       <div className="flex items-center gap-2">
+        <Link
+          href="/admin/messages?status=UNREAD"
+          aria-label={`Messages non lus : ${unreadMessages}`}
+          className="border-border hover:border-accent/50 hover:text-accent relative inline-flex size-9 items-center justify-center rounded-md border transition-colors"
+        >
+          <Mail className="size-4" />
+          {unreadMessages > 0 && (
+            <span className="bg-accent text-accent-foreground absolute -right-1.5 -top-1.5 inline-flex min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold tabular-nums shadow-[0_0_12px_-2px_var(--glow-color)]">
+              {unreadMessages > 99 ? "99+" : unreadMessages}
+            </span>
+          )}
+        </Link>
         <Link
           href="/"
           target="_blank"

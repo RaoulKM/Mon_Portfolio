@@ -48,7 +48,11 @@ const ICONS: Record<string, LucideIcon> = {
   KeyRound,
 };
 
-export function AdminSidebar() {
+export function AdminSidebar({
+  unreadMessages = 0,
+}: {
+  unreadMessages?: number;
+}) {
   const pathname = usePathname();
 
   return (
@@ -72,6 +76,10 @@ export function AdminSidebar() {
               const Icon = ICONS[item.icon] ?? LayoutDashboard;
               const active =
                 pathname === item.href || pathname.startsWith(item.href + "/");
+              const badge =
+                item.href === "/admin/messages" && unreadMessages > 0
+                  ? unreadMessages
+                  : null;
               return (
                 <Link
                   key={item.href}
@@ -92,6 +100,11 @@ export function AdminSidebar() {
                   )}
                   <Icon className="relative size-4 shrink-0" />
                   <span className="relative">{item.label}</span>
+                  {badge != null && (
+                    <span className="bg-accent text-accent-foreground relative ml-auto inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold tabular-nums shadow-[0_0_14px_-2px_var(--glow-color)]">
+                      {badge > 99 ? "99+" : badge}
+                    </span>
+                  )}
                 </Link>
               );
             })}
