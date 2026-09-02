@@ -10,11 +10,20 @@ const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString }),
 });
 
+/**
+ * Seed data — snapshot of the live portfolio content (spec §49).
+ * Idempotent: collections are only populated when empty; the profile,
+ * technologies, the AgriPulse project and site settings are upserted.
+ *
+ * Note: a few `/uploads/…` paths point at files uploaded locally through
+ * the admin. On a fresh clone they 404 until you re-upload — replace them
+ * (or the Cloudinary URLs) from `/admin`.
+ */
 async function main() {
-  // --- Admin user (spec §34, §49) ---------------------------------------
+  // --- Admin user (spec §34) -----------------------------------------
   const email = process.env.SEED_ADMIN_EMAIL ?? "admin@example.com";
   const password = process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe_12345";
-  const name = process.env.SEED_ADMIN_NAME ?? "Administrateur";
+  const name = process.env.SEED_ADMIN_NAME ?? "KOM MBOUME PIERRE RAOUL";
 
   const passwordHash = await bcrypt.hash(password, 12);
   await prisma.user.upsert({
@@ -24,37 +33,56 @@ async function main() {
   });
   console.log(`✓ Admin: ${email}`);
 
-  // --- Profile + social links -----------------------------------------
+  // --- Profile + social links (§8, §25) ----------------------------
   const existingProfile = await prisma.profile.findFirst({ where: { isPrimary: true } });
-  if (!existingProfile) {
-    await prisma.profile.create({
+  const profileData = {
+    fullName: "KOM MBOUME PIERRE RAOUL",
+    headline: "Développeur Full-Stack / Software Engineer",
+    shortBio:
+      "Je conçois des applications web modernes, des SaaS et des solutions numériques évolutives.",
+    bio: "Développeur Full-Stack orienté produits numériques, SaaS, architecture logicielle et IA. J'aime construire et maintenir des applications complètes, de la base de données au déploiement.",
+    philosophy:
+      "Privilégier une architecture propre, maintenable et évolutive plutôt qu'une accumulation de fonctionnalités.",
+    objectives: "Mettre le numérique au service du quotidien.",
+    location: "Cameroun",
+    availability: "Ouvert aux opportunités",
+    yearsOfExperience: 1,
+    projectsCount: 3,
+    technologiesCount: 15,
+    certificationsCount: 2,
+    email: "kommboumepierreraoul@gmail.com",
+    phone: "699885533",
+    whatsappNumber: "+237 6 98 55 53 74",
+    whatsappMessage: "Bonjour Raoul, je vous contacte au sujet de ",
+    cvUrlFr: "/uploads/cv-kom-mboume-pierre-raoul-484d9d4f.pdf",
+  } satisfies Prisma.ProfileUpdateInput;
+
+  const socialLinks = [
+    { platform: "GitHub", url: "https://github.com/", icon: "github", displayOrder: 0 },
+    { platform: "LinkedIn", url: "https://www.linkedin.com/", icon: "linkedin", displayOrder: 1 },
+    { platform: "Facebook", url: "https://facebook.com", icon: "facebook", displayOrder: 2 },
+  ];
+
+  if (existingProfile) {
+    await prisma.profile.update({
+      where: { id: existingProfile.id },
       data: {
-        fullName: "KOM MBOUME PIERRE RAOUL",
-        headline: "Développeur Full-Stack / Software Engineer",
-        shortBio:
-          "Je conçois des applications web modernes, des SaaS et des solutions numériques évolutives.",
-        bio: "Développeur Full-Stack orienté produits numériques, SaaS, architecture logicielle et IA. J'aime construire et maintenir des applications complètes, de la base de données au déploiement.",
-        philosophy:
-          "Privilégier une architecture propre, maintenable et évolutive plutôt qu'une accumulation de fonctionnalités.",
-        location: "Cameroun",
-        availability: "Ouvert aux opportunités",
-        yearsOfExperience: 3,
-        projectsCount: 20,
-        technologiesCount: 15,
-        certificationsCount: 2,
-        email: "kommboumepierreraoul@gmail.com",
-        socialLinks: {
-          create: [
-            { platform: "GitHub", url: "https://github.com/", icon: "github", displayOrder: 0 },
-            { platform: "LinkedIn", url: "https://www.linkedin.com/", icon: "linkedin", displayOrder: 1 },
-          ],
-        },
+        ...profileData,
+        socialLinks: { deleteMany: {}, create: socialLinks },
       },
     });
-    console.log("✓ Profile");
+  } else {
+    await prisma.profile.create({
+      data: {
+        ...profileData,
+        isPrimary: true,
+        socialLinks: { create: socialLinks },
+      },
+    });
   }
+  console.log("✓ Profile + 3 social links");
 
-  // --- Technologies ---------------------------------------------------
+  // --- Technologies (§10) ----------------------------------------
   const techs: Prisma.TechnologyCreateInput[] = [
     { name: "Next.js", slug: "nextjs", category: "FRONTEND", color: "#000000" },
     { name: "React", slug: "react", category: "FRONTEND", color: "#61DAFB" },
@@ -74,20 +102,47 @@ async function main() {
   }
   console.log(`✓ ${techs.length} technologies`);
 
-  // --- Skills (spec §9) ---------------------------------------------
+  // --- Skills (§9) ---------------------------------------------
   const skills: Prisma.SkillCreateManyInput[] = [
     { name: "Next.js", category: "FRONTEND", level: 90, displayOrder: 0 },
     { name: "React", category: "FRONTEND", level: 90, displayOrder: 1 },
     { name: "TypeScript", category: "FRONTEND", level: 85, displayOrder: 2 },
     { name: "Tailwind CSS", category: "FRONTEND", level: 88, displayOrder: 3 },
+    {
+      name: "HTML",
+      category: "FRONTEND",
+      level: 95,
+      years: 3,
+      icon: "ChevronRight",
+      color: "#3bf7af",
+      description: "Langage de base",
+      displayOrder: 4,
+    },
     { name: "Laravel", category: "BACKEND", level: 90, displayOrder: 0 },
     { name: "Node.js", category: "BACKEND", level: 75, displayOrder: 1 },
     { name: "REST API", category: "BACKEND", level: 85, displayOrder: 2 },
     { name: "PostgreSQL", category: "DATABASE", level: 82, displayOrder: 0 },
     { name: "Prisma", category: "DATABASE", level: 85, displayOrder: 1 },
     { name: "Docker", category: "DEVOPS", level: 70, displayOrder: 0 },
-    { name: "Git / GitHub", category: "DEVOPS", level: 88, displayOrder: 1 },
+    {
+      name: "Git / GitHub",
+      category: "DEVOPS",
+      level: 88,
+      icon: "GitBranch",
+      color: "#d301ef",
+      displayOrder: 1,
+    },
     { name: "CI/CD", category: "DEVOPS", level: 65, displayOrder: 2 },
+    {
+      name: "Versioning",
+      category: "DEVOPS",
+      level: 80,
+      years: 2,
+      icon: "GitFork",
+      color: "#b53bf7",
+      description: "Gestion des versions de projet avec Git / GitHub",
+      displayOrder: 3,
+    },
     { name: "AI APIs", category: "AI", level: 70, displayOrder: 0 },
     { name: "AI moderation", category: "AI", level: 65, displayOrder: 1 },
   ];
@@ -96,7 +151,7 @@ async function main() {
     console.log(`✓ ${skills.length} skills`);
   }
 
-  // --- Featured project: AgriPulse (spec §10) ----------------------
+  // --- Featured project: AgriPulse (§10) -----------------------
   await prisma.project.upsert({
     where: { slug: "agripulse" },
     update: {},
@@ -108,7 +163,22 @@ async function main() {
         "Plateforme SaaS agricole : communauté, marketplace, missions, messagerie, notifications, IA, modération et cartographie.",
       problem: "Fragmentation des échanges et du marché entre acteurs agricoles.",
       solution: "Une plateforme unifiée mêlant communauté, marketplace et missions.",
-      architecture: "Next.js + Laravel API + PostgreSQL/PostGIS, conteneurisé avec Docker.",
+      architecture:
+        "Next.js + Laravel API + PostgreSQL/PostGIS, conteneurisé avec Docker.",
+      coverImage:
+        "https://res.cloudinary.com/trveepjk/image/upload/v1788370897/portfolio/ymtvkyzbykzn3tajj9dm.png",
+      gallery: [
+        "/uploads/capture-d-cran-2026-07-06-023652-41cc1ddb.png",
+        "/uploads/capture-d-cran-2026-07-06-004720-57881e22.png",
+        "/uploads/capture-d-cran-2026-07-06-004659-3f3ad5e4.png",
+        "/uploads/capture-d-cran-2026-07-05-225703-dfcb4833.png",
+        "/uploads/capture-d-cran-2026-07-05-224835-57eed2f8.png",
+        "/uploads/capture-d-cran-2026-07-05-224818-0b020642.png",
+        "/uploads/capture-d-cran-2026-07-05-224504-c30b2aaf.png",
+        "/uploads/capture-d-cran-2026-07-05-224151-004801fb.png",
+        "/uploads/capture-d-cran-2026-07-05-224053-6b9a140a.png",
+      ],
+      liveUrl: "https://agripulse237.site",
       status: "IN_PROGRESS",
       featured: true,
       isPublished: true,
@@ -118,40 +188,55 @@ async function main() {
           { slug: "nextjs" },
           { slug: "laravel" },
           { slug: "postgresql" },
+          { slug: "docker" },
           { slug: "postgis" },
           { slug: "openai" },
-          { slug: "docker" },
         ],
       },
     },
   });
   console.log("✓ Project: AgriPulse");
 
-  // --- Experience / Education / Certifications / Services ---------
+  // --- Education (§13) ---------------------------------------
   if ((await prisma.education.count()) === 0) {
     await prisma.education.createMany({
       data: [
         {
-          institution: "IUT",
-          degree: "DUT Génie Logiciel",
-          field: "Génie Logiciel",
-          startDate: new Date("2019-09-01"),
-          endDate: new Date("2021-07-01"),
+          institution: "Lycée Classique de Bafoussam",
+          degree: "Baccalauréat",
+          field: "Scientifique (C)",
+          startDate: new Date("2022-09-07"),
+          endDate: new Date("2023-07-31"),
+          description: "Mention Bien",
+          location: "Bafoussam, Cameroun",
+          logo: "/uploads/whatsapp-image-2025-01-02-at-5-23-32-pm-removebg-preview-1-244660b6.png",
           displayOrder: 0,
         },
         {
-          institution: "Université",
+          institution: "IUT FOTSO Victor Bandjoun",
+          degree: "DUT Génie Logiciel",
+          field: "Génie Logiciel",
+          startDate: new Date("2024-09-01"),
+          endDate: new Date("2025-07-01"),
+          description: "Mention Bien",
+          location: "Bandjoun, Cameroun",
+          displayOrder: 1,
+        },
+        {
+          institution: "IUT FOTSO Victor Bandjoun",
           degree: "Licence Technologique Génie Logiciel",
           field: "Génie Logiciel",
-          startDate: new Date("2021-09-01"),
-          endDate: new Date("2022-07-01"),
-          displayOrder: 1,
+          startDate: new Date("2025-09-01"),
+          endDate: new Date("2026-07-01"),
+          location: "Bandjoun, Cameroun",
+          displayOrder: 2,
         },
       ],
     });
-    console.log("✓ Education");
+    console.log("✓ 3 education entries");
   }
 
+  // --- Services (§15) ---------------------------------------
   if ((await prisma.service.count()) === 0) {
     await prisma.service.createMany({
       data: [
@@ -160,7 +245,8 @@ async function main() {
           slug: "developpement-web",
           description: "Applications modernes avec Next.js, React et Laravel.",
           icon: "Code",
-          features: ["Next.js / React", "Laravel", "TypeScript"],
+          features: ["Next.js / React", "Laravel", "TypeScript", "HTML", "CSS", "JavaScript"],
+          featured: true,
           displayOrder: 0,
         },
         {
@@ -197,15 +283,37 @@ async function main() {
         },
       ],
     });
-    console.log("✓ Services");
+    console.log("✓ 5 services");
   }
 
-  // --- Site settings (spec §27) ----------------------------------
+  // --- Site settings (§27) ---------------------------------
   const settings: Array<[string, Prisma.InputJsonValue]> = [
-    ["general", { siteName: "KOM MBOUME PIERRE RAOUL", timezone: "Africa/Douala", language: "fr" }],
-    ["seo", { defaultTitle: "KOM MBOUME PIERRE RAOUL — Développeur Full-Stack", keywords: ["Next.js", "Laravel", "Full-Stack"] }],
-    ["social", { github: "https://github.com/", linkedin: "https://www.linkedin.com/" }],
-    ["contact", { contactEmail: "kommboumepierreraoul@gmail.com", notificationEmail: "kommboumepierreraoul@gmail.com" }],
+    [
+      "general",
+      {
+        siteName: "KOM MBOUME PIERRE RAOUL",
+        timezone: "Africa/Douala",
+        language: "fr",
+      },
+    ],
+    [
+      "seo",
+      {
+        defaultTitle: "KOM MBOUME PIERRE RAOUL — Développeur Full-Stack",
+        keywords: ["Next.js", "Laravel", "Full-Stack"],
+      },
+    ],
+    [
+      "social",
+      { github: "https://github.com/", linkedin: "https://www.linkedin.com/" },
+    ],
+    [
+      "contact",
+      {
+        contactEmail: "kommboumepierreraoul@gmail.com",
+        notificationEmail: "kommboumepierreraoul@gmail.com",
+      },
+    ],
   ];
   for (const [key, value] of settings) {
     await prisma.siteSetting.upsert({ where: { key }, update: { value }, create: { key, value } });
