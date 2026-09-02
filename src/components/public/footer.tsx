@@ -4,6 +4,16 @@ import { siteConfig, publicNav } from "@/config/site";
 import { TrackedLink } from "@/components/analytics/tracked-link";
 import { BrandGlyph, WhatsappIcon } from "@/components/icons/brand";
 
+// Flat list of every page for the footer (top-level + grouped children).
+const footerLinks = Array.from(
+  new Map(
+    publicNav.flatMap((n) => [
+      [n.href, n.label] as const,
+      ...(n.children?.map((c) => [c.href, c.label] as const) ?? []),
+    ]),
+  ),
+).map(([href, label]) => ({ href, label }));
+
 type SocialLink = { id: string; platform: string; url: string; icon: string | null };
 
 export function Footer({
@@ -30,7 +40,7 @@ export function Footer({
           </p>
 
           <nav className="flex flex-wrap gap-x-4 gap-y-1">
-            {publicNav.map((item) => (
+            {footerLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

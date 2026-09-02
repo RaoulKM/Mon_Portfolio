@@ -9,18 +9,37 @@ export const siteConfig = {
   defaultOgImage: "/og.png",
 } as const;
 
-/** Public navigation (spec §32). */
-export const publicNav = [
+/** Public navigation (spec §32) — a few links are grouped to declutter. */
+export type NavNode = {
+  label: string;
+  href: string;
+  children?: readonly { label: string; href: string; desc?: string }[];
+};
+
+export const publicNav: readonly NavNode[] = [
   { label: "Accueil", href: "/" },
-  { label: "À propos", href: "/about" },
+  {
+    label: "Profil",
+    href: "/about",
+    children: [
+      { label: "À propos", href: "/about", desc: "Parcours, philosophie, objectifs" },
+      { label: "Compétences", href: "/skills", desc: "Stack technique par domaine" },
+      { label: "Expérience", href: "/experience", desc: "Parcours professionnel" },
+      { label: "Formation", href: "/education", desc: "Diplômes & certifications" },
+    ],
+  },
   { label: "Projets", href: "/projects" },
-  { label: "Compétences", href: "/skills" },
-  { label: "Expérience", href: "/experience" },
-  { label: "Formation", href: "/education" },
   { label: "Services", href: "/services" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ] as const;
+
+/** Flat, de-duplicated list of every public URL (sitemap, footer). */
+export const flatNav: string[] = Array.from(
+  new Set(
+    publicNav.flatMap((n) => [n.href, ...(n.children?.map((c) => c.href) ?? [])]),
+  ),
+);
 
 /** Admin sidebar (spec §33). */
 export const adminNav = [
