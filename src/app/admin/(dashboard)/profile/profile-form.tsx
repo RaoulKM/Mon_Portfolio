@@ -8,16 +8,22 @@ import { Button } from "@/components/ui/button";
 import { AdminForm } from "@/components/admin/form/admin-form";
 import { TextField, TextareaField } from "@/components/admin/form/fields";
 import { ImageField } from "@/components/admin/form/image-field";
+import { SocialIconPicker } from "@/components/admin/form/social-icon-picker";
 import { ProfilePreview } from "@/components/admin/previews/profile-preview";
 import { saveProfile } from "./actions";
 
 type ProfileWithLinks = Profile & { socialLinks: SocialLink[] };
+type LinkRow = { platform: string; url: string; icon: string };
 
 export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
-  const [links, setLinks] = React.useState<{ platform: string; url: string }[]>(
-    profile?.socialLinks.map((s) => ({ platform: s.platform, url: s.url })) ?? [
-      { platform: "GitHub", url: "" },
-      { platform: "LinkedIn", url: "" },
+  const [links, setLinks] = React.useState<LinkRow[]>(
+    profile?.socialLinks.map((s) => ({
+      platform: s.platform,
+      url: s.url,
+      icon: s.icon ?? s.platform.toLowerCase(),
+    })) ?? [
+      { platform: "GitHub", url: "", icon: "github" },
+      { platform: "LinkedIn", url: "", icon: "linkedin" },
     ],
   );
 
@@ -148,12 +154,16 @@ export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
 
           <div className="border-border border-t pt-4">
             <div className="mb-3 flex items-center justify-between">
-              <span className="text-sm font-medium">Réseaux sociaux</span>
+              <span className="font-mono text-[13px] font-medium">
+                Réseaux sociaux
+              </span>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => setLinks((l) => [...l, { platform: "", url: "" }])}
+                onClick={() =>
+                  setLinks((l) => [...l, { platform: "", url: "", icon: "link" }])
+                }
               >
                 <Plus /> Ajouter
               </Button>
@@ -161,17 +171,18 @@ export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
             <div className="space-y-2">
               {links.map((link, i) => (
                 <div key={i} className="flex gap-2">
+                  <SocialIconPicker name="social_icon" defaultValue={link.icon} />
                   <input
                     name="social_platform"
                     defaultValue={link.platform}
                     placeholder="Plateforme"
-                    className="border-input bg-background w-40 rounded-md border px-3 py-2 text-sm"
+                    className="border-input bg-background/60 w-36 rounded-md border px-3 py-2 text-sm"
                   />
                   <input
                     name="social_url"
                     defaultValue={link.url}
                     placeholder="https://…"
-                    className="border-input bg-background flex-1 rounded-md border px-3 py-2 text-sm"
+                    className="border-input bg-background/60 flex-1 rounded-md border px-3 py-2 font-mono text-xs"
                   />
                   <Button
                     type="button"

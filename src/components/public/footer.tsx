@@ -1,21 +1,8 @@
 import Link from "next/link";
-import { Globe } from "lucide-react";
-import type { ComponentType, SVGProps } from "react";
 
 import { siteConfig, publicNav } from "@/config/site";
 import { TrackedLink } from "@/components/analytics/tracked-link";
-import { GithubIcon, LinkedinIcon, XIcon } from "@/components/icons/brand";
-
-type IconComp = ComponentType<SVGProps<SVGSVGElement>>;
-
-const SOCIAL_ICONS: Record<string, IconComp> = {
-  github: GithubIcon,
-  linkedin: LinkedinIcon,
-  twitter: XIcon,
-  x: XIcon,
-  globe: Globe,
-  website: Globe,
-};
+import { BrandGlyph } from "@/components/icons/brand";
 
 type SocialLink = { id: string; platform: string; url: string; icon: string | null };
 
@@ -54,22 +41,18 @@ export function Footer({
 
           {socialLinks.length > 0 && (
             <div className="flex gap-2">
-              {socialLinks.map((s) => {
-                const Icon =
-                  SOCIAL_ICONS[(s.icon ?? s.platform).toLowerCase()] ?? Globe;
-                return (
-                  <TrackedLink
-                    key={s.id}
-                    href={s.url}
-                    event="SOCIAL_CLICK"
-                    entityId={s.platform}
-                    aria-label={s.platform}
-                    className="border-border hover:border-accent/50 hover:text-accent inline-flex size-9 items-center justify-center rounded-md border transition-colors"
-                  >
-                    <Icon className="size-4" />
-                  </TrackedLink>
-                );
-              })}
+              {socialLinks.map((s) => (
+                <TrackedLink
+                  key={s.id}
+                  href={s.url}
+                  event="SOCIAL_CLICK"
+                  entityId={s.platform}
+                  aria-label={s.platform}
+                  className="border-border hover:border-accent/50 hover:text-accent inline-flex size-9 items-center justify-center rounded-md border transition-colors"
+                >
+                  <BrandGlyph slug={s.icon ?? s.platform} className="size-4" />
+                </TrackedLink>
+              ))}
             </div>
           )}
         </div>

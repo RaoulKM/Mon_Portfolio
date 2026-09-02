@@ -3,7 +3,13 @@
 import { CircleDot } from "lucide-react";
 
 import type { FormValues } from "@/components/admin/form/admin-form";
+import { BrandGlyph } from "@/components/icons/brand";
 import { PreviewFrame, Placeholder, val, num } from "./shell";
+
+function asArray(v: FormValues[string] | undefined): string[] {
+  if (Array.isArray(v)) return v;
+  return typeof v === "string" && v ? [v] : [];
+}
 
 export function ProfilePreview({ values }: { values: FormValues }) {
   const name = val(values, "fullName");
@@ -24,6 +30,12 @@ export function ProfilePreview({ values }: { values: FormValues }) {
     { v: num(values, "technologiesCount"), l: "techs" },
     { v: num(values, "yearsOfExperience"), l: "ans" },
   ].filter((s) => s.v > 0);
+
+  const socialIcons = asArray(values.social_icon);
+  const socialUrls = asArray(values.social_url);
+  const socials = socialIcons
+    .map((icon, i) => ({ icon, url: socialUrls[i] ?? "" }))
+    .filter((s) => s.url.trim());
 
   return (
     <PreviewFrame label="hero">
@@ -60,6 +72,19 @@ export function ProfilePreview({ values }: { values: FormValues }) {
           </span>
         )}
       </div>
+
+      {socials.length > 0 && (
+        <div className="mt-3 flex gap-1.5">
+          {socials.map((s, i) => (
+            <span
+              key={i}
+              className="border-border text-muted-foreground flex size-7 items-center justify-center rounded-md border"
+            >
+              <BrandGlyph slug={s.icon} className="size-3.5" />
+            </span>
+          ))}
+        </div>
+      )}
 
       {stats.length > 0 && (
         <div className="border-border mt-4 grid grid-cols-3 divide-x divide-border border-t pt-3 text-center">

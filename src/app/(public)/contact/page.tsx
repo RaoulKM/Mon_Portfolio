@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Mail, MapPin, Globe } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 
-import { GithubIcon, LinkedinIcon } from "@/components/icons/brand";
-
+import { BrandGlyph } from "@/components/icons/brand";
 import { Container, Section, SectionHeading } from "@/components/ui/section";
 import { ContactForm } from "@/components/public/contact-form";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
@@ -49,16 +48,12 @@ export default async function ContactPage() {
                 </li>
               )}
               {profile?.socialLinks?.map((s) => {
-                const p = s.platform.toLowerCase();
-                const Icon =
-                  p === "linkedin"
-                    ? LinkedinIcon
-                    : p === "github"
-                      ? GithubIcon
-                      : Globe;
                 return (
                   <li key={s.id} className="flex items-center gap-3">
-                    <Icon className="text-muted-foreground size-4" />
+                    <BrandGlyph
+                      slug={s.icon ?? s.platform}
+                      className="text-muted-foreground size-4"
+                    />
                     <a
                       href={s.url}
                       target="_blank"

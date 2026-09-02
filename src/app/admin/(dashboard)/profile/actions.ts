@@ -13,10 +13,19 @@ export async function saveProfile(
   // Social links arrive as parallel arrays, handled outside the object schema.
   const platforms = formData.getAll("social_platform").map(String);
   const urls = formData.getAll("social_url").map(String);
+  const icons = formData.getAll("social_icon").map(String);
   const socialLinks = platforms
-    .map((platform, i) => ({ platform: platform.trim(), url: (urls[i] ?? "").trim() }))
+    .map((platform, i) => ({
+      platform: platform.trim(),
+      url: (urls[i] ?? "").trim(),
+      icon: (icons[i] ?? "").trim().toLowerCase(),
+    }))
     .filter((s) => s.platform && s.url)
-    .map((s, i) => ({ ...s, displayOrder: i, icon: s.platform.toLowerCase() }));
+    .map((s, i) => ({
+      ...s,
+      displayOrder: i,
+      icon: s.icon || s.platform.toLowerCase(),
+    }));
 
   return runAction(
     {
