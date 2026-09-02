@@ -58,7 +58,8 @@ async function main() {
     phone: "699885533",
     whatsappNumber: "+237 6 98 55 53 74",
     whatsappMessage: "Bonjour Raoul, je vous contacte au sujet de ",
-    cvUrlFr: "/uploads/cv-kom-mboume-pierre-raoul-484d9d4f.pdf",
+    // Committed static asset (public/documents/) so it deploys with the app.
+    cvUrlFr: "/documents/cv-kom-mboume-pierre-raoul-fr.pdf",
   } satisfies Prisma.ProfileUpdateInput;
 
   const socialLinks = [
