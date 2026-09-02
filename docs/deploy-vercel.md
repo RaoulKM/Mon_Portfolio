@@ -107,9 +107,12 @@ npm run db:seed                # KOM MBOUME…, technologies, AgriPulse, setting
   absents sur Vercel : logo IUT FOTSO Victor, CV PDF, galerie AgriPulse (9 images).
   → Les re-téléverser depuis l'admin (uploads Cloudinary) après connexion, ou
   éditer les URL pour pointer vers Cloudinary.
-- **E-mail de contact** : actuellement un stub console (aucune notification
-  réelle). Le formulaire enregistre bien le message en base + badge « non lus ».
-  Pour de vraies notifications, brancher un service SMTP/API plus tard.
+- **E-mail** : sans `EMAIL_SERVER`, les envois sont seulement loggés (console).
+  Pour activer l'envoi réel (réponse aux messages depuis `/admin/messages`,
+  notification de contact), définir `EMAIL_SERVER` (URL SMTP — Gmail + App
+  Password, cf. `.env.example`) et `EMAIL_FROM` dans Vercel, puis *Redeploy*.
+  Le formulaire de contact enregistre toujours le message en base (+ badge
+  « non lus ») même sans email configuré.
 - **Cold starts** : la 1re requête après inactivité réveille la fonction + la
   base Neon (~1 s). Normal en gratuit.
 - **Neon free** : la base se met en veille après inactivité et a un quota de

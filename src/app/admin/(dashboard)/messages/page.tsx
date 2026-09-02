@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { AdminPageHeader, AdminPlaceholder } from "@/components/admin/page-header";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { MessageStatusButtons } from "./message-actions";
+import { ReplyForm } from "./reply-form";
 import { deleteMessage } from "./actions";
 
 export const metadata: Metadata = { title: "Messages" };
@@ -101,22 +102,20 @@ export default async function MessagesAdminPage({
 
               <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
                 <MessageStatusButtons id={m.id} current={m.status} />
-                <div className="flex items-center gap-1">
-                  <a
-                    href={`mailto:${m.email}?subject=${encodeURIComponent(
-                      "RE: " + (m.subject || "votre message"),
-                    )}`}
-                    className="border-border hover:bg-muted rounded-md border px-2 py-1 text-xs"
-                  >
-                    Répondre
-                  </a>
-                  <DeleteButton
-                    action={deleteMessage}
-                    id={m.id}
-                    label={`message de ${m.name}`}
-                  />
-                </div>
+                <DeleteButton
+                  action={deleteMessage}
+                  id={m.id}
+                  label={`message de ${m.name}`}
+                />
               </div>
+
+              <ReplyForm
+                id={m.id}
+                to={m.email}
+                name={m.name}
+                subject={m.subject || "votre message"}
+                repliedAt={m.repliedAt?.toISOString() ?? null}
+              />
             </div>
           ))}
         </div>

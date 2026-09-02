@@ -161,6 +161,14 @@ export const messageStatusSchema = z.object({
   status: z.enum(["UNREAD", "READ", "ARCHIVED", "SPAM"]),
 });
 
+// --- Message reply (spec §19) ----------------------------
+export const messageReplySchema = z.object({
+  id: z.string().min(1),
+  subject: z.string().trim().min(1, "Objet requis").max(200),
+  body: z.string().trim().min(1, "Message requis").max(5000),
+});
+export type MessageReplyInput = z.infer<typeof messageReplySchema>;
+
 // --- Generic id / reorder ---------------------------------
 export const idSchema = z.object({ id: z.string().min(1) });
 export const reorderSchema = z.object({

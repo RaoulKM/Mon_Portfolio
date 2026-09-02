@@ -397,6 +397,8 @@ model ContactMessage {
   userAgent String?
   createdAt DateTime      @default(now())
   readAt    DateTime?
+  repliedAt DateTime?
+  replyBody String?       @db.Text
 
   @@index([status, createdAt])
 }
