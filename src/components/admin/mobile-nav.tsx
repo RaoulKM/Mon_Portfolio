@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, Terminal } from "lucide-react";
@@ -11,6 +12,10 @@ import { EASE_OUT } from "@/lib/motion";
 /**
  * Mobile navigation: a hamburger button (shown below `md`) that opens a
  * left slide-over drawer with the full admin nav.
+ *
+ * The overlay is portalled to <body>: the topbar uses `backdrop-blur`, and an
+ * ancestor with a backdrop-filter traps `position: fixed` descendants (WebKit),
+ * which would clip the drawer to the header.
  */
 export function AdminMobileNav({
   unreadMessages = 0,
@@ -18,7 +23,13 @@ export function AdminMobileNav({
   unreadMessages?: number;
 }) {
   const [open, setOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
   const pathname = usePathname();
+
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   // Safety net: close if the route changes while the drawer is open
   // (e.g. browser back/forward). Link clicks already close it via onNavigate.
@@ -42,6 +53,55 @@ export function AdminMobileNav({
     };
   }, [open]);
 
+  const overlay = (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[100] md:hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+        >
+          <button
+            type="button"
+            aria-label="Fermer le menu"
+            onClick={() => setOpen(false)}
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          />
+          <motion.aside
+            className="border-border bg-card absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col overflow-y-auto border-r shadow-2xl"
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.25, ease: EASE_OUT }}
+          >
+            <div className="border-border flex h-16 items-center gap-2 border-b px-6">
+              <span className="border-accent/40 bg-accent/10 text-accent flex size-8 items-center justify-center rounded-md border">
+                <Terminal className="size-4" />
+              </span>
+              <span className="font-mono font-bold tracking-tight">admin</span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Fermer le menu"
+                className="border-border hover:border-accent/50 hover:text-accent ml-auto inline-flex size-8 items-center justify-center rounded-md border transition-colors"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+
+            <AdminNavList
+              unreadMessages={unreadMessages}
+              onNavigate={() => setOpen(false)}
+              layoutId="admin-nav-active-mobile"
+            />
+          </motion.aside>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   return (
     <>
       <button
@@ -54,52 +114,7 @@ export function AdminMobileNav({
         <Menu className="size-4" />
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="fixed inset-0 z-50 md:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <button
-              type="button"
-              aria-label="Fermer le menu"
-              onClick={() => setOpen(false)}
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            />
-            <motion.aside
-              className="border-border bg-card absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col overflow-y-auto border-r shadow-2xl"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ duration: 0.25, ease: EASE_OUT }}
-            >
-              <div className="border-border flex h-16 items-center gap-2 border-b px-6">
-                <span className="border-accent/40 bg-accent/10 text-accent flex size-8 items-center justify-center rounded-md border">
-                  <Terminal className="size-4" />
-                </span>
-                <span className="font-mono font-bold tracking-tight">admin</span>
-                <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  aria-label="Fermer le menu"
-                  className="border-border hover:border-accent/50 hover:text-accent ml-auto inline-flex size-8 items-center justify-center rounded-md border transition-colors"
-                >
-                  <X className="size-4" />
-                </button>
-              </div>
-
-              <AdminNavList
-                unreadMessages={unreadMessages}
-                onNavigate={() => setOpen(false)}
-                layoutId="admin-nav-active-mobile"
-              />
-            </motion.aside>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mounted ? createPortal(overlay, document.body) : null}
     </>
   );
 }
