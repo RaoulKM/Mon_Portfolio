@@ -11,9 +11,7 @@ export function Section({
   className,
   ...props
 }: React.ComponentProps<"section">) {
-  return (
-    <section className={cn("py-16 sm:py-24", className)} {...props} />
-  );
+  return <section className={cn("py-20 sm:py-28", className)} {...props} />;
 }
 
 export function SectionHeading({
@@ -30,15 +28,18 @@ export function SectionHeading({
   return (
     <div className={cn("max-w-2xl", className)}>
       {eyebrow && (
-        <p className="text-accent text-sm font-semibold tracking-widest uppercase">
+        <p className="mono-eyebrow flex items-center gap-2">
+          <span className="text-terminal-dim">{"//"}</span>
           {eyebrow}
         </p>
       )}
-      <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+      <h2 className="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
         {title}
       </h2>
       {description && (
-        <p className="text-muted-foreground mt-4 text-lg">{description}</p>
+        <p className="text-muted-foreground mt-4 text-lg text-pretty">
+          {description}
+        </p>
       )}
     </div>
   );

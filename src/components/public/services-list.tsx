@@ -1,8 +1,8 @@
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Reveal, RevealItem } from "@/components/motion/reveal";
 import type { Service } from "@prisma/client";
 
 function resolveIcon(name?: string | null): LucideIcon {
@@ -14,12 +14,18 @@ function resolveIcon(name?: string | null): LucideIcon {
 
 export function ServicesList({ services }: { services: Service[] }) {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((service) => {
+    <Reveal className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service, i) => {
         const Icon = resolveIcon(service.icon);
         return (
-          <Card key={service.id} className="flex flex-col p-6">
-            <div className="bg-primary/10 text-primary flex size-11 items-center justify-center rounded-lg">
+          <RevealItem
+            key={service.id}
+            className="group bg-card hover:bg-surface relative flex flex-col p-6 transition-colors"
+          >
+            <span className="text-terminal-dim absolute right-5 top-5 font-mono text-xs">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="border-accent/30 bg-accent/10 text-accent flex size-11 items-center justify-center rounded-lg border transition-transform group-hover:-translate-y-0.5">
               <Icon className="size-5" />
             </div>
             <h3 className="mt-4 font-semibold">{service.title}</h3>
@@ -29,20 +35,20 @@ export function ServicesList({ services }: { services: Service[] }) {
             {service.features.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-1.5">
                 {service.features.map((f) => (
-                  <Badge key={f} variant="secondary">
+                  <Badge key={f} variant="outline">
                     {f}
                   </Badge>
                 ))}
               </div>
             )}
             {service.price && (
-              <p className="text-muted-foreground mt-4 text-sm font-medium">
+              <p className="text-muted-foreground mt-4 font-mono text-sm">
                 {service.price}
               </p>
             )}
-          </Card>
+          </RevealItem>
         );
       })}
-    </div>
+    </Reveal>
   );
 }

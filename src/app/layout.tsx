@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, JetBrains_Mono } from "next/font/google";
 
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -7,6 +7,12 @@ import "./globals.css";
 
 const montserrat = Montserrat({
   variable: "--font-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -36,11 +42,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" suppressHydrationWarning className={`${montserrat.variable} h-full`}>
+    <html
+      lang="fr"
+      suppressHydrationWarning
+      className={`${montserrat.variable} ${jetbrainsMono.variable} h-full`}
+    >
       <body className="bg-background text-foreground min-h-full font-sans antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

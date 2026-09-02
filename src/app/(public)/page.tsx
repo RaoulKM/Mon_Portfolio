@@ -10,6 +10,7 @@ import { ProjectCard } from "@/components/public/project-card";
 import { ServicesList } from "@/components/public/services-list";
 import { CtaBanner } from "@/components/public/cta";
 import { EmptyState } from "@/components/public/empty-state";
+import { Reveal, RevealItem, FadeUp } from "@/components/motion/reveal";
 import { PersonJsonLd, WebSiteJsonLd } from "@/lib/seo/jsonld";
 import {
   getProfile,
@@ -40,44 +41,50 @@ export default async function HomePage() {
       {skillGroups.length > 0 && (
         <Section>
           <Container>
-            <SectionHeading
-              eyebrow="Compétences"
-              title="Ce que je maîtrise"
-              description="Un socle full-stack, du frontend au déploiement."
-            />
+            <FadeUp>
+              <SectionHeading
+                eyebrow="skills"
+                title="Ce que je maîtrise"
+                description="Un socle full-stack, du frontend au déploiement."
+              />
+            </FadeUp>
             <div className="mt-10">
               <SkillGroups groups={skillGroups.slice(0, 2)} />
             </div>
-            <Button asChild variant="link" className="mt-6 px-0">
+            <Button asChild variant="link" className="mt-6 px-0 font-mono">
               <Link href="/skills">
-                Toutes les compétences <ArrowRight />
+                cat skills.json <ArrowRight />
               </Link>
             </Button>
           </Container>
         </Section>
       )}
 
-      <Section className="bg-muted/30">
+      <Section className="border-border border-y">
         <Container>
-          <SectionHeading
-            eyebrow="Projets"
-            title="Réalisations en vedette"
-            description="Une sélection de ce que j'ai conçu et construit."
-          />
+          <FadeUp>
+            <SectionHeading
+              eyebrow="projects"
+              title="Réalisations en vedette"
+              description="Une sélection de ce que j'ai conçu et construit."
+            />
+          </FadeUp>
           <div className="mt-10">
             {featured.length > 0 ? (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {featured.map((p) => (
-                  <ProjectCard key={p.id} project={p} />
+              <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {featured.map((p, i) => (
+                  <RevealItem key={p.id}>
+                    <ProjectCard project={p} index={i} />
+                  </RevealItem>
                 ))}
-              </div>
+              </Reveal>
             ) : (
               <EmptyState message="Les projets seront bientôt disponibles." />
             )}
           </div>
-          <Button asChild variant="link" className="mt-6 px-0">
+          <Button asChild variant="link" className="mt-6 px-0 font-mono">
             <Link href="/projects">
-              Tous les projets <ArrowRight />
+              ls -la ./projects <ArrowRight />
             </Link>
           </Button>
         </Container>
@@ -86,10 +93,9 @@ export default async function HomePage() {
       {services.length > 0 && (
         <Section>
           <Container>
-            <SectionHeading
-              eyebrow="Services"
-              title="Comment je peux aider"
-            />
+            <FadeUp>
+              <SectionHeading eyebrow="services" title="Comment je peux aider" />
+            </FadeUp>
             <div className="mt-10">
               <ServicesList services={services.slice(0, 6)} />
             </div>
