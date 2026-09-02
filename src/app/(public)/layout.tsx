@@ -5,14 +5,10 @@ import { RetroBackdrop } from "@/components/retro/backdrop";
 import { CursorGlow } from "@/components/retro/cursor-glow";
 import { buildWhatsappUrl } from "@/lib/whatsapp";
 import { getProfile } from "@/lib/queries";
-
-// ISR: public pages are CMS-driven — rebuild in the background at most hourly
-// so admin edits (Phase 3) surface without a full redeploy. `next dev` is fresh.
-export const revalidate = 3600;
+import { getI18n } from "@/i18n";
 
 export default async function PublicLayout({ children }: LayoutProps<"/">) {
-  const profile = await getProfile();
-
+  const [profile, { locale, t }] = await Promise.all([getProfile(), getI18n()]);
   const cvUrl = profile?.cvUrlFr ?? profile?.cvUrlEn ?? "/resume";
 
   return (
@@ -21,14 +17,14 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
         href="#content"
         className="bg-accent text-accent-foreground focus:ring-ring sr-only rounded-md px-4 py-2 font-mono text-sm focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:ring-2"
       >
-        Aller au contenu
+        {t.common.skipToContent}
       </a>
 
       <RetroBackdrop />
       <CursorGlow />
       <PageViewTracker />
 
-      <Navbar cvUrl={cvUrl} />
+      <Navbar cvUrl={cvUrl} locale={locale} nav={t.nav} cvLabel={t.common.cv} />
       <main id="content" className="relative flex-1">
         {children}
       </main>
@@ -43,6 +39,8 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
           profile?.whatsappNumber,
           profile?.whatsappMessage,
         )}
+        t={t.footer}
+        nav={t.nav}
       />
     </div>
   );

@@ -4,13 +4,12 @@ import { ArrowUp, Mail, FileDown, MessageSquare } from "lucide-react";
 import { siteConfig, publicNav } from "@/config/site";
 import { TrackedLink } from "@/components/analytics/tracked-link";
 import { BrandGlyph, WhatsappIcon } from "@/components/icons/brand";
+import type { Dictionary } from "@/i18n/dictionaries/fr";
 
 type SocialLink = { id: string; platform: string; url: string; icon: string | null };
 
 const profilGroup = publicNav.find((n) => n.href === "/about");
-const exploreLinks = publicNav
-  .filter((n) => ["/projects", "/services", "/blog"].includes(n.href))
-  .map((n) => ({ href: n.href, label: n.label }));
+const exploreKeys = ["/projects", "/services", "/blog"];
 
 function FooterLink({ href, label }: { href: string; label: string }) {
   return (
@@ -32,6 +31,8 @@ export function Footer({
   socialLinks = [],
   whatsappUrl = null,
   cvUrl,
+  t,
+  nav,
 }: {
   name?: string;
   headline?: string | null;
@@ -40,8 +41,13 @@ export function Footer({
   socialLinks?: SocialLink[];
   whatsappUrl?: string | null;
   cvUrl?: string | null;
+  t: Dictionary["footer"];
+  nav: Dictionary["nav"];
 }) {
   const year = new Date().getFullYear();
+  const exploreLinks = publicNav
+    .filter((n) => exploreKeys.includes(n.href))
+    .map((n) => ({ href: n.href, label: nav[n.key] }));
 
   return (
     <footer className="border-border relative mt-28 border-t">
@@ -103,15 +109,15 @@ export function Footer({
 
           {/* Profil */}
           <div>
-            <p className="mono-eyebrow mb-2">profil</p>
+            <p className="mono-eyebrow mb-2">{t.profile}</p>
             {profilGroup?.children?.map((c) => (
-              <FooterLink key={c.href} href={c.href} label={c.label} />
+              <FooterLink key={c.href} href={c.href} label={nav[c.key]} />
             ))}
           </div>
 
           {/* Explorer */}
           <div>
-            <p className="mono-eyebrow mb-2">explorer</p>
+            <p className="mono-eyebrow mb-2">{t.explore}</p>
             {exploreLinks.map((l) => (
               <FooterLink key={l.href} href={l.href} label={l.label} />
             ))}
@@ -119,12 +125,12 @@ export function Footer({
 
           {/* Contact */}
           <div>
-            <p className="mono-eyebrow mb-2">contact</p>
+            <p className="mono-eyebrow mb-2">{t.contact}</p>
             <Link
               href="/contact"
               className="text-muted-foreground hover:text-accent flex items-center gap-2 py-1 font-mono text-[13px] transition-colors"
             >
-              <MessageSquare className="size-3.5" /> Écrire un message
+              <MessageSquare className="size-3.5" /> {nav.contact}
             </Link>
             {email && (
               <a
@@ -150,7 +156,7 @@ export function Footer({
               entityId="footer"
               className="text-muted-foreground hover:text-accent flex items-center gap-2 py-1 font-mono text-[13px] transition-colors"
             >
-              <FileDown className="size-3.5" /> Télécharger le CV
+              <FileDown className="size-3.5" /> {t.downloadCv}
             </TrackedLink>
           </div>
         </div>
@@ -159,7 +165,7 @@ export function Footer({
         <div className="border-border mt-12 flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-terminal font-mono text-xs">
             <span className="text-terminal-dim">visitor@portfolio</span>:~$ echo
-            &quot;merci de votre visite&quot;
+            &quot;{t.thanks}&quot;
             <span className="animate-blink"> _</span>
           </p>
           <div className="text-muted-foreground flex items-center gap-4 font-mono text-xs">
@@ -170,7 +176,7 @@ export function Footer({
             <span>Next.js · Prisma · Tailwind</span>
             <a
               href="#top"
-              aria-label="Haut de page"
+              aria-label="Top"
               className="border-border hover:border-accent/50 hover:text-accent inline-flex size-7 items-center justify-center rounded-md border transition-colors"
             >
               <ArrowUp className="size-3.5" />

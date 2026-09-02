@@ -6,10 +6,11 @@ import { Loader2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { contactSchema } from "@/lib/validation/contact";
 import { trackEvent } from "@/lib/analytics/client";
+import type { Dictionary } from "@/i18n/dictionaries/fr";
 
 type FieldErrors = Partial<Record<string, string>>;
 
-export function ContactForm() {
+export function ContactForm({ t }: { t: Dictionary["contact"] }) {
   const [status, setStatus] = React.useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
@@ -51,7 +52,7 @@ export function ContactForm() {
       });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        setFormError(body?.error?.message ?? "Envoi impossible. Réessayez plus tard.");
+        setFormError(body?.error?.message ?? t.error);
         setStatus("error");
         return;
       }
@@ -59,7 +60,7 @@ export function ContactForm() {
       setStatus("sent");
       form.reset();
     } catch {
-      setFormError("Erreur réseau. Réessayez plus tard.");
+      setFormError(t.error);
       setStatus("error");
     }
   }
@@ -68,12 +69,10 @@ export function ContactForm() {
     return (
       <div className="border-border bg-card flex flex-col items-center gap-3 rounded-xl border p-10 text-center">
         <CheckCircle2 className="text-accent size-8" />
-        <p className="font-medium">Message envoyé</p>
-        <p className="text-muted-foreground text-sm">
-          Merci — je reviens vers vous rapidement.
-        </p>
+        <p className="font-medium">{t.sent}</p>
+        <p className="text-muted-foreground text-sm">{t.sentHint}</p>
         <Button variant="outline" size="sm" onClick={() => setStatus("idle")}>
-          Envoyer un autre message
+          {t.sendAnother}
         </Button>
       </div>
     );
@@ -91,9 +90,9 @@ export function ContactForm() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Nom" name="name" error={errors.name} required />
+        <Field label={t.name} name="name" error={errors.name} required />
         <Field
-          label="Email"
+          label={t.email}
           name="email"
           type="email"
           error={errors.email}
@@ -101,13 +100,13 @@ export function ContactForm() {
         />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Entreprise" name="company" error={errors.company} />
-        <Field label="Objet" name="subject" error={errors.subject} />
+        <Field label={t.company} name="company" error={errors.company} />
+        <Field label={t.subject} name="subject" error={errors.subject} />
       </div>
 
       <div className="space-y-1.5">
         <label htmlFor="message" className="text-sm font-medium">
-          Message <span className="text-destructive">*</span>
+          {t.message} <span className="text-destructive">*</span>
         </label>
         <textarea
           id="message"
@@ -125,7 +124,7 @@ export function ContactForm() {
 
       <Button type="submit" disabled={status === "sending"}>
         {status === "sending" && <Loader2 className="animate-spin" />}
-        Envoyer le message
+        {status === "sending" ? t.sending : t.send}
       </Button>
     </form>
   );

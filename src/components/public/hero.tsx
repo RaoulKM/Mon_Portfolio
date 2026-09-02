@@ -12,13 +12,20 @@ import { Typewriter } from "@/components/motion/typewriter";
 import { EASE_OUT } from "@/lib/motion";
 import { siteConfig } from "@/config/site";
 import type { ProfileWithLinks } from "@/lib/queries";
+import type { Dictionary } from "@/i18n/dictionaries/fr";
 
 const STACK = ["Laravel", "Next.js", "React", "TypeScript", "PostgreSQL", "Docker"];
 
-export function Hero({ profile }: { profile: ProfileWithLinks | null }) {
+export function Hero({
+  profile,
+  t,
+}: {
+  profile: ProfileWithLinks | null;
+  t: Dictionary;
+}) {
   const reduce = useReducedMotion();
   const name = profile?.fullName ?? siteConfig.name;
-  const headline = profile?.headline ?? "Développeur Full-Stack";
+  const headline = profile?.headline ?? t.hero.eyebrowRoles[0];
   const shortBio =
     profile?.shortBio ??
     "Je conçois des applications web modernes, des SaaS et des solutions numériques évolutives.";
@@ -72,12 +79,7 @@ export function Hero({ profile }: { profile: ProfileWithLinks | null }) {
             >
               <span className="text-terminal-dim">&gt; </span>
               <Typewriter
-                phrases={[
-                  headline,
-                  "Architecte d'applications SaaS",
-                  "Intégrateur d'IA",
-                  "Ingénieur produit",
-                ]}
+                phrases={[headline, ...t.hero.eyebrowRoles.slice(1)]}
               />
             </motion.div>
 
@@ -92,14 +94,14 @@ export function Hero({ profile }: { profile: ProfileWithLinks | null }) {
               <Magnetic>
                 <Button asChild size="lg">
                   <Link href="/projects">
-                    Voir mes projets <ArrowRight />
+                    {t.common.seeProjects} <ArrowRight />
                   </Link>
                 </Button>
               </Magnetic>
               <Magnetic>
                 <Button asChild size="lg" variant="outline">
                   <Link href="/contact">
-                    <Mail /> Me contacter
+                    <Mail /> {t.common.contactMe}
                   </Link>
                 </Button>
               </Magnetic>
@@ -141,7 +143,7 @@ export function Hero({ profile }: { profile: ProfileWithLinks | null }) {
               </div>
             )}
             <span className="border-border bg-background/80 text-terminal absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-md border px-2 py-1 font-mono text-[10px] backdrop-blur">
-              online
+              {t.hero.online}
             </span>
           </motion.div>
         </div>
@@ -155,9 +157,9 @@ export function Hero({ profile }: { profile: ProfileWithLinks | null }) {
                 aria-hidden={k === 1}
                 className="flex shrink-0 items-center gap-6 pr-6 animate-marquee motion-reduce:animate-none"
               >
-                {STACK.map((t) => (
-                  <span key={t} className="flex items-center gap-6">
-                    <span className="text-terminal-dim">◇</span> {t}
+                {STACK.map((tech) => (
+                  <span key={tech} className="flex items-center gap-6">
+                    <span className="text-terminal-dim">◇</span> {tech}
                   </span>
                 ))}
               </div>

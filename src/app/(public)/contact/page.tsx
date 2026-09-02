@@ -11,6 +11,7 @@ import { TrackedLink } from "@/components/analytics/tracked-link";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { buildWhatsappUrl } from "@/lib/whatsapp";
 import { getProfile } from "@/lib/queries";
+import { getI18n } from "@/i18n";
 
 
 export const metadata: Metadata = pageMetadata({
@@ -21,7 +22,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function ContactPage() {
-  const profile = await getProfile();
+  const [profile, { t }] = await Promise.all([getProfile(), getI18n()]);
   const whatsappUrl = buildWhatsappUrl(
     profile?.whatsappNumber,
     profile?.whatsappMessage,
@@ -31,17 +32,17 @@ export default async function ContactPage() {
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Accueil", url: "/" },
-          { name: "Contact", url: "/contact" },
+          { name: t.nav.home, url: "/" },
+          { name: t.nav.contact, url: "/contact" },
         ]}
       />
       <Section>
         <Container className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           <div>
             <SectionHeading
-              eyebrow="Contact"
-              title="Discutons de votre projet"
-              description="Une idée, une mission, une question — écrivez-moi."
+              eyebrow={t.nav.contact.toLowerCase()}
+              title={t.contact.title}
+              description={t.contact.description}
             />
             <ul className="mt-8 space-y-3 text-sm">
               {profile?.email && (
@@ -86,18 +87,18 @@ export default async function ContactPage() {
                     event="SOCIAL_CLICK"
                     entityId="whatsapp"
                   >
-                    <WhatsappIcon className="size-5" /> Discuter sur WhatsApp
+                    <WhatsappIcon className="size-5" /> {t.contact.whatsappButton}
                   </TrackedLink>
                 </Button>
                 <p className="text-muted-foreground mt-2 font-mono text-xs">
-                  réponse rapide · message pré-rempli
+                  {t.contact.whatsappHint}
                 </p>
               </div>
             )}
           </div>
 
           <div className="bg-card border-border rounded-xl border p-6 sm:p-8">
-            <ContactForm />
+            <ContactForm t={t.contact} />
           </div>
         </Container>
       </Section>

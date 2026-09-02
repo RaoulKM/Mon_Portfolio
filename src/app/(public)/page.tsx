@@ -12,6 +12,7 @@ import { CtaBanner } from "@/components/public/cta";
 import { EmptyState } from "@/components/public/empty-state";
 import { Reveal, RevealItem, FadeUp } from "@/components/motion/reveal";
 import { PersonJsonLd, WebSiteJsonLd } from "@/lib/seo/jsonld";
+import { getI18n } from "@/i18n";
 import {
   getProfile,
   getSkillGroups,
@@ -20,11 +21,12 @@ import {
 } from "@/lib/queries";
 
 export default async function HomePage() {
-  const [profile, skillGroups, featured, services] = await Promise.all([
+  const [profile, skillGroups, featured, services, { t }] = await Promise.all([
     getProfile(),
     getSkillGroups(),
     getFeaturedProjects(3),
     getServices(),
+    getI18n(),
   ]);
 
   return (
@@ -32,7 +34,7 @@ export default async function HomePage() {
       <PersonJsonLd profile={profile} />
       <WebSiteJsonLd />
 
-      <Hero profile={profile} />
+      <Hero profile={profile} t={t} />
 
       <Container>
         <StatsRow profile={profile} />
@@ -43,9 +45,8 @@ export default async function HomePage() {
           <Container>
             <FadeUp>
               <SectionHeading
-                eyebrow="skills"
-                title="Ce que je maîtrise"
-                description="Un socle full-stack, du frontend au déploiement."
+                eyebrow={t.sections.skills.eyebrow}
+                title={t.sections.skills.title}
               />
             </FadeUp>
             <div className="mt-10">
@@ -53,7 +54,7 @@ export default async function HomePage() {
             </div>
             <Button asChild variant="link" className="mt-6 px-0 font-mono">
               <Link href="/skills">
-                cat skills.json <ArrowRight />
+                {t.nav.skills} <ArrowRight />
               </Link>
             </Button>
           </Container>
@@ -64,9 +65,8 @@ export default async function HomePage() {
         <Container>
           <FadeUp>
             <SectionHeading
-              eyebrow="projects"
-              title="Réalisations en vedette"
-              description="Une sélection de ce que j'ai conçu et construit."
+              eyebrow={t.sections.projects.eyebrow}
+              title={t.sections.projects.title}
             />
           </FadeUp>
           <div className="mt-10">
@@ -79,12 +79,12 @@ export default async function HomePage() {
                 ))}
               </Reveal>
             ) : (
-              <EmptyState message="Les projets seront bientôt disponibles." />
+              <EmptyState message={t.empty.projects} />
             )}
           </div>
           <Button asChild variant="link" className="mt-6 px-0 font-mono">
             <Link href="/projects">
-              ls -la ./projects <ArrowRight />
+              {t.nav.projects} <ArrowRight />
             </Link>
           </Button>
         </Container>
@@ -94,7 +94,10 @@ export default async function HomePage() {
         <Section>
           <Container>
             <FadeUp>
-              <SectionHeading eyebrow="services" title="Comment je peux aider" />
+              <SectionHeading
+                eyebrow={t.sections.services.eyebrow}
+                title={t.sections.services.title}
+              />
             </FadeUp>
             <div className="mt-10">
               <ServicesList services={services.slice(0, 6)} />

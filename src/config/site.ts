@@ -9,29 +9,45 @@ export const siteConfig = {
   defaultOgImage: "/og.png",
 } as const;
 
-/** Public navigation (spec §32) — a few links are grouped to declutter. */
+/** Public navigation (spec §32) — a few links are grouped to declutter.
+ *  `key` maps to `dictionary.nav.*` for i18n; `label` is the FR fallback. */
+type NavKey =
+  | "home"
+  | "profile"
+  | "about"
+  | "skills"
+  | "experience"
+  | "education"
+  | "projects"
+  | "services"
+  | "blog"
+  | "contact";
+
+export type NavChild = { key: NavKey; label: string; href: string; desc?: string };
 export type NavNode = {
+  key: NavKey;
   label: string;
   href: string;
-  children?: readonly { label: string; href: string; desc?: string }[];
+  children?: readonly NavChild[];
 };
 
 export const publicNav: readonly NavNode[] = [
-  { label: "Accueil", href: "/" },
+  { key: "home", label: "Accueil", href: "/" },
   {
+    key: "profile",
     label: "Profil",
     href: "/about",
     children: [
-      { label: "À propos", href: "/about", desc: "Parcours, philosophie, objectifs" },
-      { label: "Compétences", href: "/skills", desc: "Stack technique par domaine" },
-      { label: "Expérience", href: "/experience", desc: "Parcours professionnel" },
-      { label: "Formation", href: "/education", desc: "Diplômes & certifications" },
+      { key: "about", label: "À propos", href: "/about", desc: "Parcours, philosophie, objectifs" },
+      { key: "skills", label: "Compétences", href: "/skills", desc: "Stack technique par domaine" },
+      { key: "experience", label: "Expérience", href: "/experience", desc: "Parcours professionnel" },
+      { key: "education", label: "Formation", href: "/education", desc: "Diplômes & certifications" },
     ],
   },
-  { label: "Projets", href: "/projects" },
-  { label: "Services", href: "/services" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { key: "projects", label: "Projets", href: "/projects" },
+  { key: "services", label: "Services", href: "/services" },
+  { key: "blog", label: "Blog", href: "/blog" },
+  { key: "contact", label: "Contact", href: "/contact" },
 ] as const;
 
 /** Flat, de-duplicated list of every public URL (sitemap, footer). */

@@ -9,8 +9,23 @@ import { Menu, X, FileDown, Terminal, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { publicNav, siteConfig, type NavNode } from "@/config/site";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LocaleSwitcher } from "@/components/public/locale-switcher";
+import type { Locale } from "@/i18n/routing";
+import type { Dictionary } from "@/i18n/dictionaries/fr";
 
-export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
+type NavDict = Dictionary["nav"];
+
+export function Navbar({
+  cvUrl = "/resume",
+  locale,
+  nav,
+  cvLabel = "CV",
+}: {
+  cvUrl?: string;
+  locale: Locale;
+  nav: NavDict;
+  cvLabel?: string;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
@@ -60,7 +75,7 @@ export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
                       : "text-muted-foreground group-hover/dd:text-foreground",
                   )}
                 >
-                  {node.label}
+                  {nav[node.key]}
                   <ChevronDown className="size-3.5 transition-transform group-hover/dd:rotate-180" />
                 </Link>
 
@@ -77,7 +92,7 @@ export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
                             : "hover:bg-muted",
                         )}
                       >
-                        <span className="font-mono text-[13px]">{c.label}</span>
+                        <span className="font-mono text-[13px]">{nav[c.key]}</span>
                         {c.desc && (
                           <span className="text-muted-foreground block text-xs">
                             {c.desc}
@@ -106,7 +121,7 @@ export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                <span className="relative">{node.label}</span>
+                <span className="relative">{nav[node.key]}</span>
               </Link>
             ),
           )}
@@ -117,8 +132,9 @@ export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
             href={cvUrl}
             className="border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 hidden items-center gap-2 rounded-md border px-3 py-2 font-mono text-xs tracking-wide uppercase transition-colors sm:inline-flex"
           >
-            <FileDown className="size-4" /> CV
+            <FileDown className="size-4" /> {cvLabel}
           </Link>
+          <LocaleSwitcher current={locale} />
           <ThemeToggle />
           <button
             type="button"
@@ -153,7 +169,7 @@ export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
                     )}
                   >
                     <span className="text-terminal-dim mr-2">$</span>
-                    {node.label}
+                    {nav[node.key]}
                   </Link>
                   {node.children && (
                     <div className="border-border/60 ml-5 border-l pl-3">
@@ -169,7 +185,7 @@ export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
                               : "text-muted-foreground hover:bg-muted",
                           )}
                         >
-                          {c.label}
+                          {nav[c.key]}
                         </Link>
                       ))}
                     </div>

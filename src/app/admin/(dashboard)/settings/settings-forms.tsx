@@ -1,8 +1,13 @@
 "use client";
 
 import { AdminForm } from "@/components/admin/form/admin-form";
-import { TextField, TextareaField } from "@/components/admin/form/fields";
+import {
+  TextField,
+  TextareaField,
+  SelectField,
+} from "@/components/admin/form/fields";
 import { Card } from "@/components/ui/card";
+import { locales, localeNames } from "@/i18n/routing";
 import { saveSetting } from "./actions";
 
 type SettingsMap = Record<string, Record<string, unknown>>;
@@ -30,7 +35,12 @@ export function SettingsForms({ settings }: { settings: SettingsMap }) {
                 defaultValue={field("general", "siteDescription")}
               />
               <TextField label="Fuseau horaire" name="timezone" defaultValue={field("general", "timezone")} />
-              <TextField label="Langue" name="language" defaultValue={field("general", "language")} />
+              <SelectField
+                label="Langue par défaut du site"
+                name="language"
+                defaultValue={field("general", "language") || "fr"}
+                options={locales.map((l) => ({ value: l, label: localeNames[l] }))}
+              />
             </>
           )}
         </AdminForm>

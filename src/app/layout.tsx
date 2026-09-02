@@ -4,6 +4,7 @@ import { Montserrat, JetBrains_Mono } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getSiteSettings } from "@/lib/queries";
+import { getLocale } from "@/i18n";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -70,10 +71,12 @@ export const viewport: Viewport = {
   colorScheme: "dark light",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="fr"
+      lang={locale}
       suppressHydrationWarning
       className={`${montserrat.variable} ${jetbrainsMono.variable} h-full`}
     >
