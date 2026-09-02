@@ -55,6 +55,7 @@ export const adminNav = [
   {
     group: "Système",
     items: [
+      { label: "Mon compte", href: "/admin/account", icon: "KeyRound" },
       { label: "Paramètres", href: "/admin/settings", icon: "Settings" },
       { label: "Utilisateurs", href: "/admin/users", icon: "Users" },
       { label: "Audit Logs", href: "/admin/audit-logs", icon: "ScrollText" },

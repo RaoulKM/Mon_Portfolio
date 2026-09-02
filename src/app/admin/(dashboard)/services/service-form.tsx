@@ -8,6 +8,7 @@ import {
   TextareaField,
   SwitchField,
 } from "@/components/admin/form/fields";
+import { IconPicker } from "@/components/admin/form/icon-picker";
 import { saveService } from "./actions";
 
 export function ServiceForm({ service }: { service?: Service | null }) {
@@ -36,11 +37,11 @@ export function ServiceForm({ service }: { service?: Service | null }) {
               defaultValue={service?.slug}
               error={errors.slug}
             />
-            <TextField
-              label="Icône (nom lucide)"
+            <IconPicker
+              label="Icône"
               name="icon"
               defaultValue={service?.icon}
-              hint="Ex: Code, Server, Sparkles"
+              hint="Cherchez dans la palette"
             />
             <TextField label="Tarif (optionnel)" name="price" defaultValue={service?.price} />
             <TextField

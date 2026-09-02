@@ -50,3 +50,7 @@ Thumbs.db
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# user uploads (served from /uploads)
+/public/uploads/*
+!/public/uploads/.gitkeep

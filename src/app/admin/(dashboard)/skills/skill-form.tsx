@@ -9,6 +9,8 @@ import {
   SelectField,
   SwitchField,
 } from "@/components/admin/form/fields";
+import { IconPicker } from "@/components/admin/form/icon-picker";
+import { ColorField } from "@/components/admin/form/color-field";
 import { saveSkill } from "./actions";
 
 const CATEGORIES = [
@@ -62,12 +64,13 @@ export function SkillForm({ skill }: { skill?: Skill | null }) {
               step="0.5"
               defaultValue={skill?.years ?? ""}
             />
-            <TextField label="Icône" name="icon" defaultValue={skill?.icon} />
-            <TextField
+            <IconPicker label="Icône" name="icon" defaultValue={skill?.icon} />
+            <ColorField
               label="Couleur"
               name="color"
               defaultValue={skill?.color}
-              hint="Ex: #3178C6"
+              hint="Sélecteur ou #hex"
+              error={errors.color}
             />
             <TextField
               label="Ordre d'affichage"

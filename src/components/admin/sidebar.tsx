@@ -21,6 +21,7 @@ import {
   Users,
   ScrollText,
   Terminal,
+  KeyRound,
   type LucideIcon,
 } from "lucide-react";
 
@@ -44,21 +45,22 @@ const ICONS: Record<string, LucideIcon> = {
   Settings,
   Users,
   ScrollText,
+  KeyRound,
 };
 
 export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="border-border bg-card/60 hidden w-64 shrink-0 border-r backdrop-blur md:block">
-      <div className="border-border flex h-16 items-center gap-2 border-b px-6">
+    <aside className="border-border bg-card/60 sticky top-0 hidden h-screen w-64 shrink-0 flex-col overflow-y-auto border-r backdrop-blur md:flex">
+      <div className="border-border bg-card/60 sticky top-0 z-10 flex h-16 items-center gap-2 border-b px-6 backdrop-blur">
         <span className="border-accent/40 bg-accent/10 text-accent flex size-8 items-center justify-center rounded-md border">
           <Terminal className="size-4" />
         </span>
         <span className="font-mono font-bold tracking-tight">admin</span>
       </div>
 
-      <nav className="space-y-6 p-4">
+      <nav className="flex-1 space-y-6 p-4">
         {adminNav.map((section, i) => (
           <div key={i} className="space-y-1">
             {section.group && (

@@ -1,3 +1,7 @@
+import "server-only";
+
+import { LocalStorageProvider } from "./local";
+
 /**
  * Storage abstraction (spec §5).
  *
@@ -22,34 +26,17 @@ export interface StorageProvider {
   delete(url: string): Promise<void>;
 }
 
-class LocalStorageProvider implements StorageProvider {
-  readonly name = "local";
-
-  async upload(): Promise<StoredFile> {
-    throw new Error(
-      "LocalStorageProvider.upload not implemented — configure a real provider (Phase 3).",
-    );
-  }
-
-  async delete(): Promise<void> {
-    // no-op placeholder
-  }
-}
-
 let cached: StorageProvider | null = null;
 
 export function getStorage(): StorageProvider {
   if (cached) return cached;
 
   const provider = process.env.STORAGE_PROVIDER ?? "local";
-  switch (provider) {
-    case "cloudinary":
-    case "s3":
-      // Implemented in Phase 3 — fall back to local for now.
-      cached = new LocalStorageProvider();
-      break;
-    default:
-      cached = new LocalStorageProvider();
+  if (provider === "cloudinary" || provider === "s3") {
+    // TODO(Phase 6): real cloud providers. Fall back to local disk for now.
+    console.warn(`[storage] "${provider}" not implemented — using local disk`);
   }
+
+  cached = new LocalStorageProvider();
   return cached;
 }
