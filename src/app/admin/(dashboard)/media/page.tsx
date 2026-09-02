@@ -1,13 +1,34 @@
 import type { Metadata } from "next";
+
+import { prisma } from "@/lib/prisma";
+import { requirePermission } from "@/lib/auth/guard";
 import { AdminPageHeader, AdminPlaceholder } from "@/components/admin/page-header";
+import { AddMediaForm, MediaGrid } from "./media-client";
 
 export const metadata: Metadata = { title: "Médias" };
 
-export default function MediaAdminPage() {
+export default async function MediaAdminPage() {
+  await requirePermission("MANAGE_MEDIA");
+  const items = await prisma.media
+    .findMany({ orderBy: { createdAt: "desc" } })
+    .catch(() => null);
+
   return (
     <>
-      <AdminPageHeader title="Médias" description="Médiathèque : upload, recherche, preview et suppression." />
-      <AdminPlaceholder note="Médiathèque à implémenter en Phase 3." />
+      <AdminPageHeader
+        title="Médiathèque"
+        description="Images et fichiers réutilisables dans le contenu."
+      />
+      <div className="space-y-8">
+        <AddMediaForm />
+        {items === null ? (
+          <AdminPlaceholder note="Base de données indisponible." />
+        ) : items.length === 0 ? (
+          <AdminPlaceholder note="Aucun média." />
+        ) : (
+          <MediaGrid items={items} />
+        )}
+      </div>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { requireUser } from "@/lib/auth/guard";
 import { AdminSidebar } from "@/components/admin/sidebar";
 import { AdminTopbar } from "@/components/admin/topbar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default async function DashboardLayout({
   children,
@@ -14,6 +15,7 @@ export default async function DashboardLayout({
         <AdminTopbar email={user.email} />
         <main className="flex-1 p-4 md:p-8">{children}</main>
       </div>
+      <Toaster />
     </div>
   );
 }
