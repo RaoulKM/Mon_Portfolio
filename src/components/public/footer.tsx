@@ -150,14 +150,12 @@ export function Footer({
                 <WhatsappIcon className="size-3.5" /> WhatsApp
               </TrackedLink>
             )}
-            <TrackedLink
+            <a
               href={cvUrl || "/resume"}
-              event="CV_DOWNLOAD"
-              entityId="footer"
               className="text-muted-foreground hover:text-accent flex items-center gap-2 py-1 font-mono text-[13px] transition-colors"
             >
               <FileDown className="size-3.5" /> {f.downloadCv}
-            </TrackedLink>
+            </a>
           </div>
         </div>
 

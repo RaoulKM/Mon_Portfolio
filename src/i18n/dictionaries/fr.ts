@@ -163,6 +163,8 @@ export const fr = {
     description: "Disponible en français et en anglais, au format PDF.",
     fr: "CV — Français",
     en: "CV — English",
+    view: "Aperçu",
+    download: "Télécharger",
     metaDescription: "Télécharger le CV de KOM MBOUME PIERRE RAOUL (FR / EN).",
   },
   blogPage: {

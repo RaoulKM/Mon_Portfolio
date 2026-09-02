@@ -161,6 +161,8 @@ export const en: Dictionary = {
     description: "Available in French and English, as PDF.",
     fr: "Resume — French",
     en: "Resume — English",
+    view: "Preview",
+    download: "Download",
     metaDescription: "Download the resume of KOM MBOUME PIERRE RAOUL (FR / EN).",
   },
   blogPage: {

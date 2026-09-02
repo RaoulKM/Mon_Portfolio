@@ -9,7 +9,12 @@ import { getI18n } from "@/i18n";
 
 export default async function PublicLayout({ children }: LayoutProps<"/">) {
   const [profile, { locale, t }] = await Promise.all([getProfile(), getI18n()]);
-  const cvUrl = profile?.cvUrlFr ?? profile?.cvUrlEn ?? "/resume";
+  // Route the CTA through the tracked download endpoint when a CV exists;
+  // otherwise send visitors to the /resume page (which shows the empty state).
+  const cvUrl =
+    profile?.cvUrlFr || profile?.cvUrlEn
+      ? `/cv/${locale === "en" ? "en" : "fr"}`
+      : "/resume";
 
   return (
     <div id="top" className="scanlines relative flex min-h-full flex-col">

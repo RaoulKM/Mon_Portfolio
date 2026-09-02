@@ -126,12 +126,12 @@ export function Navbar({
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
+          <a
             href={cvUrl}
             className="border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 hidden items-center gap-2 rounded-md border px-3 py-2 font-mono text-xs tracking-wide uppercase transition-colors sm:inline-flex"
           >
             <FileDown className="size-4" /> {cvLabel}
-          </Link>
+          </a>
           <LocaleSwitcher current={locale} label={t.common.language} />
           <ThemeToggle label={t.common.toggleTheme} />
           <button
@@ -190,6 +190,13 @@ export function Navbar({
                   )}
                 </div>
               ))}
+              <a
+                href={cvUrl}
+                onClick={() => setOpen(false)}
+                className="border-accent/40 bg-accent/10 text-accent mt-2 flex items-center gap-2 rounded-md border px-3 py-2 font-mono text-sm uppercase"
+              >
+                <FileDown className="size-4" /> {cvLabel}
+              </a>
             </div>
           </motion.nav>
         )}
