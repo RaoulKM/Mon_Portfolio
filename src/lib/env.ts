@@ -29,10 +29,27 @@ const schema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),
+  CLOUDINARY_FOLDER: z.string().optional(),
 
   // Email (§18) — optional in dev
   EMAIL_SERVER: z.string().optional(),
   EMAIL_FROM: z.string().optional(),
+}).superRefine((v, ctx) => {
+  if (v.STORAGE_PROVIDER === "cloudinary") {
+    for (const key of [
+      "CLOUDINARY_CLOUD_NAME",
+      "CLOUDINARY_API_KEY",
+      "CLOUDINARY_API_SECRET",
+    ] as const) {
+      if (!v[key]) {
+        ctx.addIssue({
+          code: "custom",
+          path: [key],
+          message: `${key} is required when STORAGE_PROVIDER=cloudinary`,
+        });
+      }
+    }
+  }
 });
 
 const parsed = schema.safeParse(process.env);

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { LocalStorageProvider } from "./local";
+import { CloudinaryStorageProvider } from "./cloudinary";
 
 /**
  * Storage abstraction (spec §5).
@@ -28,13 +29,29 @@ export interface StorageProvider {
 
 let cached: StorageProvider | null = null;
 
+function hasCloudinaryCreds() {
+  return Boolean(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+      process.env.CLOUDINARY_API_KEY &&
+      process.env.CLOUDINARY_API_SECRET,
+  );
+}
+
 export function getStorage(): StorageProvider {
   if (cached) return cached;
 
   const provider = process.env.STORAGE_PROVIDER ?? "local";
-  if (provider === "cloudinary" || provider === "s3") {
-    // TODO(Phase 6): real cloud providers. Fall back to local disk for now.
-    console.warn(`[storage] "${provider}" not implemented — using local disk`);
+
+  if (provider === "cloudinary") {
+    if (hasCloudinaryCreds()) {
+      cached = new CloudinaryStorageProvider();
+      return cached;
+    }
+    console.warn(
+      "[storage] STORAGE_PROVIDER=cloudinary but credentials are missing — using local disk",
+    );
+  } else if (provider === "s3") {
+    console.warn('[storage] "s3" not implemented — using local disk');
   }
 
   cached = new LocalStorageProvider();

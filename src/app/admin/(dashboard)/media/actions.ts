@@ -41,7 +41,9 @@ export async function deleteMedia(
 
   try {
     const media = await prisma.media.delete({ where: { id } });
-    if (media.provider === "local") {
+    // Remove the underlying file for anything we uploaded ourselves
+    // (local disk or Cloudinary); leave manually-registered URLs alone.
+    if (media.provider === "local" || media.provider === "cloudinary") {
       await getStorage().delete(media.url);
     }
     await logAudit({
