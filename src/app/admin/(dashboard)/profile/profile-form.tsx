@@ -9,6 +9,7 @@ import { AdminForm } from "@/components/admin/form/admin-form";
 import { TextField, TextareaField } from "@/components/admin/form/fields";
 import { ImageField } from "@/components/admin/form/image-field";
 import { SocialIconPicker } from "@/components/admin/form/social-icon-picker";
+import { WhatsappIcon } from "@/components/icons/brand";
 import { ProfilePreview } from "@/components/admin/previews/profile-preview";
 import { saveProfile } from "./actions";
 
@@ -194,6 +195,34 @@ export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
                   </Button>
                 </div>
               ))}
+            </div>
+
+            {/* WhatsApp direct contact */}
+            <div className="border-border bg-[#25D366]/5 mt-4 rounded-lg border border-dashed p-4">
+              <p className="flex items-center gap-2 font-mono text-[13px] font-medium">
+                <WhatsappIcon className="size-4 text-[#25D366]" />
+                Contact WhatsApp
+              </p>
+              <p className="text-muted-foreground mt-1 text-xs">
+                Un bouton « Discuter sur WhatsApp » apparaîtra sur le site avec ce
+                message pré-rempli.
+              </p>
+              <div className="mt-3 grid gap-3">
+                <TextField
+                  label="Numéro (format international, ex : +237 6 XX XX XX XX)"
+                  name="whatsappNumber"
+                  defaultValue={profile?.whatsappNumber}
+                />
+                <TextareaField
+                  label="Message pré-rempli"
+                  name="whatsappMessage"
+                  rows={2}
+                  defaultValue={
+                    profile?.whatsappMessage ??
+                    "Bonjour Raoul, je vous contacte au sujet de "
+                  }
+                />
+              </div>
             </div>
           </div>
         </>

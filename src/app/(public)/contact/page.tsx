@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Mail, MapPin } from "lucide-react";
 
-import { BrandGlyph } from "@/components/icons/brand";
+import { BrandGlyph, WhatsappIcon } from "@/components/icons/brand";
+import { Button } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/ui/section";
 import { ContactForm } from "@/components/public/contact-form";
+import { TrackedLink } from "@/components/analytics/tracked-link";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildWhatsappUrl } from "@/lib/whatsapp";
 import { getProfile } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -15,6 +18,10 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const profile = await getProfile();
+  const whatsappUrl = buildWhatsappUrl(
+    profile?.whatsappNumber,
+    profile?.whatsappMessage,
+  );
 
   return (
     <>
@@ -66,6 +73,23 @@ export default async function ContactPage() {
                 );
               })}
             </ul>
+
+            {whatsappUrl && (
+              <div className="mt-8">
+                <Button asChild variant="whatsapp" size="lg">
+                  <TrackedLink
+                    href={whatsappUrl}
+                    event="SOCIAL_CLICK"
+                    entityId="whatsapp"
+                  >
+                    <WhatsappIcon className="size-5" /> Discuter sur WhatsApp
+                  </TrackedLink>
+                </Button>
+                <p className="text-muted-foreground mt-2 font-mono text-xs">
+                  réponse rapide · message pré-rempli
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="bg-card border-border rounded-xl border p-6 sm:p-8">

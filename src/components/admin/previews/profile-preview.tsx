@@ -3,7 +3,7 @@
 import { CircleDot } from "lucide-react";
 
 import type { FormValues } from "@/components/admin/form/admin-form";
-import { BrandGlyph } from "@/components/icons/brand";
+import { BrandGlyph, WhatsappIcon } from "@/components/icons/brand";
 import { PreviewFrame, Placeholder, val, num } from "./shell";
 
 function asArray(v: FormValues[string] | undefined): string[] {
@@ -73,7 +73,7 @@ export function ProfilePreview({ values }: { values: FormValues }) {
         )}
       </div>
 
-      {socials.length > 0 && (
+      {(socials.length > 0 || val(values, "whatsappNumber")) && (
         <div className="mt-3 flex gap-1.5">
           {socials.map((s, i) => (
             <span
@@ -83,6 +83,11 @@ export function ProfilePreview({ values }: { values: FormValues }) {
               <BrandGlyph slug={s.icon} className="size-3.5" />
             </span>
           ))}
+          {val(values, "whatsappNumber") && (
+            <span className="flex size-7 items-center justify-center rounded-md border border-[#25D366]/40 text-[#25D366]">
+              <WhatsappIcon className="size-3.5" />
+            </span>
+          )}
         </div>
       )}
 

@@ -2,16 +2,18 @@ import Link from "next/link";
 
 import { siteConfig, publicNav } from "@/config/site";
 import { TrackedLink } from "@/components/analytics/tracked-link";
-import { BrandGlyph } from "@/components/icons/brand";
+import { BrandGlyph, WhatsappIcon } from "@/components/icons/brand";
 
 type SocialLink = { id: string; platform: string; url: string; icon: string | null };
 
 export function Footer({
   name = siteConfig.name,
   socialLinks = [],
+  whatsappUrl = null,
 }: {
   name?: string;
   socialLinks?: SocialLink[];
+  whatsappUrl?: string | null;
 }) {
   return (
     <footer className="border-border relative mt-28 border-t">
@@ -39,7 +41,7 @@ export function Footer({
             ))}
           </nav>
 
-          {socialLinks.length > 0 && (
+          {(socialLinks.length > 0 || whatsappUrl) && (
             <div className="flex gap-2">
               {socialLinks.map((s) => (
                 <TrackedLink
@@ -53,6 +55,17 @@ export function Footer({
                   <BrandGlyph slug={s.icon ?? s.platform} className="size-4" />
                 </TrackedLink>
               ))}
+              {whatsappUrl && (
+                <TrackedLink
+                  href={whatsappUrl}
+                  event="SOCIAL_CLICK"
+                  entityId="whatsapp"
+                  aria-label="WhatsApp"
+                  className="border-border inline-flex size-9 items-center justify-center rounded-md border transition-colors hover:border-[#25D366]/60 hover:text-[#25D366]"
+                >
+                  <WhatsappIcon className="size-4" />
+                </TrackedLink>
+              )}
             </div>
           )}
         </div>

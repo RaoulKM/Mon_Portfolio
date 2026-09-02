@@ -137,6 +137,8 @@ export const profileFormSchema = z.object({
   certificationsCount: intField(0, 9999),
   email: z.string().trim().email("Email invalide").optional().or(z.literal("").transform(() => undefined)),
   phone: optionalText,
+  whatsappNumber: optionalText,
+  whatsappMessage: optionalText,
   cvUrlFr: optionalImageRef,
   cvUrlEn: optionalImageRef,
 });

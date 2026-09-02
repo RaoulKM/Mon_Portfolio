@@ -141,6 +141,8 @@ model Profile {
   certificationsCount Int    @default(0)
   email              String?
   phone              String?
+  whatsappNumber     String?
+  whatsappMessage    String?
   cvUrlFr            String?
   cvUrlEn            String?
   isPrimary          Boolean @default(true)

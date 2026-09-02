@@ -3,6 +3,7 @@ import { Footer } from "@/components/public/footer";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { RetroBackdrop } from "@/components/retro/backdrop";
 import { CursorGlow } from "@/components/retro/cursor-glow";
+import { buildWhatsappUrl } from "@/lib/whatsapp";
 import { getProfile } from "@/lib/queries";
 
 // ISR: public pages are CMS-driven — rebuild in the background at most hourly
@@ -20,7 +21,14 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
 
       <Navbar cvUrl={profile?.cvUrlFr ?? profile?.cvUrlEn ?? "/resume"} />
       <main className="relative flex-1">{children}</main>
-      <Footer name={profile?.fullName} socialLinks={profile?.socialLinks ?? []} />
+      <Footer
+        name={profile?.fullName}
+        socialLinks={profile?.socialLinks ?? []}
+        whatsappUrl={buildWhatsappUrl(
+          profile?.whatsappNumber,
+          profile?.whatsappMessage,
+        )}
+      />
     </div>
   );
 }
