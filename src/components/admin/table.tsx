@@ -12,7 +12,7 @@ export function AdminTable({
 }) {
   return (
     <div className="border-border bg-card/50 overflow-x-auto rounded-xl border backdrop-blur-sm">
-      <table className={cn("w-full text-sm", className)}>
+      <table className={cn("w-full min-w-[640px] text-sm", className)}>
         <thead className="border-border text-terminal-dim border-b text-left font-mono text-[11px] tracking-wider uppercase">
           <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:font-medium">{head}</tr>
         </thead>
