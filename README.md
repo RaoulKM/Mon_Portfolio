@@ -20,6 +20,20 @@ Spécification complète : [`docs/spec_portfolio.md`](docs/spec_portfolio.md).
 - [x] SEO de base : `metadata`, `robots.ts`, `sitemap.ts`
 - [x] Seed Prisma (§49)
 
+## Phase 2 — Public Portfolio
+
+- [x] Couche données `src/lib/queries` (Prisma + `cache()`, tolérante à une DB vide)
+- [x] Primitives UI : Button, Card, Badge, Section
+- [x] Home : hero, stats, aperçu compétences, projets en vedette, services, CTA
+- [x] Pages : about, skills, projects (filtre techno), **détail projet** (§11 : problème/
+      solution/architecture/défis/résultats, galerie, précédent/suivant), expérience
+      (timeline), formation, certifications, services, contact (formulaire réel),
+      CV (téléchargement tracké)
+- [x] Tracking analytics : PAGE_VIEW, PROJECT_VIEW, clics sortants (GitHub, social, démo, CV)
+- [x] SEO : metadata par page, JSON-LD (Person, WebSite, BreadcrumbList, CreativeWork),
+      sitemap dynamique
+- [x] ISR : le groupe public se revalide chaque heure
+
 ## Démarrage
 
 ```bash
