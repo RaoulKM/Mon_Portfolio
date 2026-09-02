@@ -5,21 +5,16 @@ import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TiltCard } from "@/components/motion/tilt-card";
 import type { ProjectListItem } from "@/lib/queries";
-
-const STATUS_LABEL: Record<string, string> = {
-  PLANNED: "planifié",
-  IN_PROGRESS: "en cours",
-  COMPLETED: "livré",
-  MAINTENANCE: "maintenance",
-  ARCHIVED: "archivé",
-};
+import type { Dictionary } from "@/i18n/dictionaries/fr";
 
 export function ProjectCard({
   project,
   index,
+  t,
 }: {
   project: ProjectListItem;
   index?: number;
+  t: Dictionary["project"];
 }) {
   return (
     <TiltCard className="h-full">
@@ -46,7 +41,7 @@ export function ProjectCard({
                 </span>
               )}
               {project.featured && (
-                <Badge variant="accent">en vedette</Badge>
+                <Badge variant="accent">{t.featured}</Badge>
               )}
             </div>
           </div>
@@ -54,9 +49,9 @@ export function ProjectCard({
 
         <div className="flex flex-1 flex-col p-5">
           <div className="text-muted-foreground flex items-center justify-between font-mono text-[11px] uppercase tracking-wide">
-            <span>{project.category?.name ?? "projet"}</span>
+            <span>{project.category?.name ?? t.kind}</span>
             <span className="text-terminal-dim">
-              {STATUS_LABEL[project.status] ?? ""}
+              {t.status[project.status] ?? ""}
             </span>
           </div>
 

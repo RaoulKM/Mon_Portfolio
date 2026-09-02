@@ -4,7 +4,7 @@ import * as React from "react";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 
-export function ThemeToggle() {
+export function ThemeToggle({ label = "Basculer le thème" }: { label?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
   // Hydration guard: theme is only known on the client (next-themes).
@@ -16,7 +16,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label="Basculer le thème"
+      aria-label={label}
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="border-border hover:bg-muted inline-flex size-9 items-center justify-center rounded-md border transition-colors"
     >

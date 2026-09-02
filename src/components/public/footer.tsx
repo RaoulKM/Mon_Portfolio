@@ -32,7 +32,6 @@ export function Footer({
   whatsappUrl = null,
   cvUrl,
   t,
-  nav,
 }: {
   name?: string;
   headline?: string | null;
@@ -41,10 +40,11 @@ export function Footer({
   socialLinks?: SocialLink[];
   whatsappUrl?: string | null;
   cvUrl?: string | null;
-  t: Dictionary["footer"];
-  nav: Dictionary["nav"];
+  t: Dictionary;
 }) {
   const year = new Date().getFullYear();
+  const nav = t.nav;
+  const f = t.footer;
   const exploreLinks = publicNav
     .filter((n) => exploreKeys.includes(n.href))
     .map((n) => ({ href: n.href, label: nav[n.key] }));
@@ -65,7 +65,7 @@ export function Footer({
             <p className="text-muted-foreground mt-4 max-w-xs text-sm text-pretty">
               {headline
                 ? `${name} — ${headline}.`
-                : "Applications web modernes, SaaS et solutions numériques évolutives."}
+                : t.common.tagline}
             </p>
 
             {availability && (
@@ -109,7 +109,7 @@ export function Footer({
 
           {/* Profil */}
           <div>
-            <p className="mono-eyebrow mb-2">{t.profile}</p>
+            <p className="mono-eyebrow mb-2">{f.profile}</p>
             {profilGroup?.children?.map((c) => (
               <FooterLink key={c.href} href={c.href} label={nav[c.key]} />
             ))}
@@ -117,7 +117,7 @@ export function Footer({
 
           {/* Explorer */}
           <div>
-            <p className="mono-eyebrow mb-2">{t.explore}</p>
+            <p className="mono-eyebrow mb-2">{f.explore}</p>
             {exploreLinks.map((l) => (
               <FooterLink key={l.href} href={l.href} label={l.label} />
             ))}
@@ -125,7 +125,7 @@ export function Footer({
 
           {/* Contact */}
           <div>
-            <p className="mono-eyebrow mb-2">{t.contact}</p>
+            <p className="mono-eyebrow mb-2">{f.contact}</p>
             <Link
               href="/contact"
               className="text-muted-foreground hover:text-accent flex items-center gap-2 py-1 font-mono text-[13px] transition-colors"
@@ -156,7 +156,7 @@ export function Footer({
               entityId="footer"
               className="text-muted-foreground hover:text-accent flex items-center gap-2 py-1 font-mono text-[13px] transition-colors"
             >
-              <FileDown className="size-3.5" /> {t.downloadCv}
+              <FileDown className="size-3.5" /> {f.downloadCv}
             </TrackedLink>
           </div>
         </div>
@@ -165,7 +165,7 @@ export function Footer({
         <div className="border-border mt-12 flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-terminal font-mono text-xs">
             <span className="text-terminal-dim">visitor@portfolio</span>:~$ echo
-            &quot;{t.thanks}&quot;
+            &quot;{f.thanks}&quot;
             <span className="animate-blink"> _</span>
           </p>
           <div className="text-muted-foreground flex items-center gap-4 font-mono text-xs">

@@ -24,8 +24,14 @@ export function readingTime(content: string): number {
   return Math.max(1, Math.round(words / 200));
 }
 
-/** Format a date range like "Jan 2023 — Present" (fr-FR). */
-export function formatDateRange(start: Date, end?: Date | null): string {
-  const fmt = new Intl.DateTimeFormat("fr-FR", { month: "short", year: "numeric" });
-  return `${fmt.format(start)} — ${end ? fmt.format(end) : "aujourd'hui"}`;
+/** Format a date range like "janv. 2023 — aujourd'hui". */
+export function formatDateRange(
+  start: Date,
+  end?: Date | null,
+  opts?: { locale?: string; present?: string },
+): string {
+  const locale = opts?.locale === "en" ? "en-US" : "fr-FR";
+  const present = opts?.present ?? (opts?.locale === "en" ? "present" : "aujourd'hui");
+  const fmt = new Intl.DateTimeFormat(locale, { month: "short", year: "numeric" });
+  return `${fmt.format(start)} — ${end ? fmt.format(end) : present}`;
 }

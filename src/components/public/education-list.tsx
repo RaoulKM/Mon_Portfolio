@@ -2,9 +2,12 @@ import { GraduationCap } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { formatDateRange } from "@/lib/utils";
+import { getI18n } from "@/i18n";
 import type { Education } from "@prisma/client";
 
-export function EducationList({ items }: { items: Education[] }) {
+export async function EducationList({ items }: { items: Education[] }) {
+  const { locale, t } = await getI18n();
+
   return (
     <div className="space-y-4">
       {items.map((e) => (
@@ -19,7 +22,10 @@ export function EducationList({ items }: { items: Education[] }) {
               {e.field ? ` · ${e.field}` : ""}
             </p>
             <p className="text-terminal-dim mt-0.5 font-mono text-xs">
-              {formatDateRange(e.startDate, e.endDate)}
+              {formatDateRange(e.startDate, e.endDate, {
+                locale,
+                present: t.common.present,
+              })}
               {e.location ? ` · ${e.location}` : ""}
             </p>
             {e.description && (

@@ -1,13 +1,16 @@
 import { Container, Section } from "@/components/ui/section";
+import { getI18n } from "@/i18n";
 
-/** Temporary section shell — real content arrives in Phase 2 (spec §58). */
-export function PagePlaceholder({
+/** Temporary section shell — real content arrives in a later phase. */
+export async function PagePlaceholder({
   title,
   description,
 }: {
   title: string;
   description?: string;
 }) {
+  const { t } = await getI18n();
+
   return (
     <Section>
       <Container>
@@ -23,7 +26,7 @@ export function PagePlaceholder({
         <div className="terminal-frame text-muted-foreground mt-10 p-6 font-mono text-sm">
           <span className="text-terminal-dim">$</span> build --section &quot;
           {title.toLowerCase()}&quot;{" "}
-          <span className="text-accent">[en cours]</span>
+          <span className="text-accent">[{t.placeholder.building}]</span>
           <span className="animate-blink"> _</span>
         </div>
       </Container>

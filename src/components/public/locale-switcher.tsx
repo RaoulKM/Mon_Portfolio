@@ -8,7 +8,13 @@ import { cn } from "@/lib/utils";
 import { locales, type Locale } from "@/i18n/routing";
 import { setLocale } from "@/i18n/actions";
 
-export function LocaleSwitcher({ current }: { current: Locale }) {
+export function LocaleSwitcher({
+  current,
+  label = "Langue",
+}: {
+  current: Locale;
+  label?: string;
+}) {
   const router = useRouter();
   const [pending, startTransition] = React.useTransition();
 
@@ -24,7 +30,7 @@ export function LocaleSwitcher({ current }: { current: Locale }) {
     <div
       className="border-border flex items-center overflow-hidden rounded-md border font-mono text-[11px]"
       role="group"
-      aria-label="Langue"
+      aria-label={label}
     >
       <span className="text-muted-foreground flex items-center px-1.5">
         <Languages className="size-3.5" />

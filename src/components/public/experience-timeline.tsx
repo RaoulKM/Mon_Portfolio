@@ -6,8 +6,19 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import { Badge } from "@/components/ui/badge";
 import { formatDateRange } from "@/lib/utils";
 import type { Experience } from "@prisma/client";
+import type { Locale } from "@/i18n/routing";
 
-export function ExperienceTimeline({ items }: { items: Experience[] }) {
+export function ExperienceTimeline({
+  items,
+  locale,
+  currentLabel,
+  presentLabel,
+}: {
+  items: Experience[];
+  locale: Locale;
+  currentLabel: string;
+  presentLabel: string;
+}) {
   const reduce = useReducedMotion();
   const ref = React.useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({
@@ -40,14 +51,17 @@ export function ExperienceTimeline({ items }: { items: Experience[] }) {
           <span className="border-accent bg-background absolute -left-[7px] mt-1.5 size-3.5 rounded-full border-2 shadow-[0_0_12px_var(--glow-color)]" />
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="font-semibold">{exp.position}</h3>
-            {exp.isCurrent && <Badge variant="accent">actuel</Badge>}
+            {exp.isCurrent && <Badge variant="accent">{currentLabel}</Badge>}
           </div>
           <p className="text-muted-foreground font-mono text-sm">
             {exp.company}
             {exp.location ? ` · ${exp.location}` : ""}
           </p>
           <p className="text-terminal-dim mt-0.5 font-mono text-xs">
-            {formatDateRange(exp.startDate, exp.endDate)}
+            {formatDateRange(exp.startDate, exp.endDate, {
+              locale,
+              present: presentLabel,
+            })}
           </p>
           {exp.description && (
             <p className="mt-3 text-sm text-pretty">{exp.description}</p>

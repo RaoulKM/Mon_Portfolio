@@ -7,35 +7,45 @@ import { EmptyState } from "@/components/public/empty-state";
 import { FadeUp } from "@/components/motion/reveal";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getCertifications } from "@/lib/queries";
+import { getDictionary, getLocale, getI18n } from "@/i18n";
 
-export const metadata: Metadata = pageMetadata({
-  path: "/certifications",
-  title: "Certifications",
-  description: "Certifications et accréditations vérifiables.",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = getDictionary(await getLocale());
+  return pageMetadata({
+    path: "/certifications",
+    title: t.certificationsPage.title,
+    description: t.certificationsPage.metaDescription,
+  });
+}
 
 export default async function CertificationsPage() {
-  const certifications = await getCertifications();
+  const [certifications, { t }] = await Promise.all([
+    getCertifications(),
+    getI18n(),
+  ]);
 
   return (
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Accueil", url: "/" },
-          { name: "Formation", url: "/education" },
-          { name: "Certifications", url: "/certifications" },
+          { name: t.nav.home, url: "/" },
+          { name: t.nav.education, url: "/education" },
+          { name: t.certificationsPage.title, url: "/certifications" },
         ]}
       />
       <Section>
         <Container>
           <FadeUp>
-            <SectionHeading eyebrow="certifications" title="Accréditations" />
+            <SectionHeading
+              eyebrow={t.certificationsPage.eyebrow}
+              title={t.certificationsPage.title}
+            />
           </FadeUp>
           <div className="mt-10">
             {certifications.length > 0 ? (
               <CertificationsList items={certifications} />
             ) : (
-              <EmptyState message="Les certifications seront bientôt disponibles." />
+              <EmptyState message={t.empty.certifications} />
             )}
           </div>
         </Container>

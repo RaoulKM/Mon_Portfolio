@@ -1,45 +1,49 @@
 import type { Metadata } from "next";
 
 import { pageMetadata } from "@/lib/seo/metadata";
-
 import { Container, Section, SectionHeading } from "@/components/ui/section";
 import { ServicesList } from "@/components/public/services-list";
 import { CtaBanner } from "@/components/public/cta";
 import { EmptyState } from "@/components/public/empty-state";
+import { FadeUp } from "@/components/motion/reveal";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getServices } from "@/lib/queries";
+import { getDictionary, getLocale, getI18n } from "@/i18n";
 
-
-export const metadata: Metadata = pageMetadata({
-  path: "/services",
-  title: "Services",
-  description:
-    "Prestations : développement web, API & backend, SaaS, UI/UX, intégration IA et DevOps.",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = getDictionary(await getLocale());
+  return pageMetadata({
+    path: "/services",
+    title: t.nav.services,
+    description: t.servicesPage.metaDescription,
+  });
+}
 
 export default async function ServicesPage() {
-  const services = await getServices();
+  const [services, { t }] = await Promise.all([getServices(), getI18n()]);
 
   return (
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Accueil", url: "/" },
-          { name: "Services", url: "/services" },
+          { name: t.nav.home, url: "/" },
+          { name: t.nav.services, url: "/services" },
         ]}
       />
       <Section>
         <Container>
-          <SectionHeading
-            eyebrow="Services"
-            title="Prestations"
-            description="De la conception au déploiement, un accompagnement full-stack."
-          />
+          <FadeUp>
+            <SectionHeading
+              eyebrow={t.servicesPage.eyebrow}
+              title={t.servicesPage.title}
+              description={t.servicesPage.description}
+            />
+          </FadeUp>
           <div className="mt-10">
             {services.length > 0 ? (
               <ServicesList services={services} />
             ) : (
-              <EmptyState message="Les services seront bientôt disponibles." />
+              <EmptyState message={t.empty.services} />
             )}
           </div>
         </Container>

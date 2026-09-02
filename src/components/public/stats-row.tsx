@@ -1,17 +1,24 @@
 import { Counter } from "@/components/motion/counter";
 import { Reveal, RevealItem } from "@/components/motion/reveal";
+import { getI18n } from "@/i18n";
 import type { ProfileWithLinks } from "@/lib/queries";
 
-export function StatsRow({ profile }: { profile: ProfileWithLinks | null }) {
+export async function StatsRow({ profile }: { profile: ProfileWithLinks | null }) {
+  const { t } = await getI18n();
+
   const stats = [
-    { value: profile?.projectsCount ?? 20, suffix: "+", label: "projets livrés" },
-    { value: profile?.technologiesCount ?? 15, suffix: "+", label: "technologies" },
-    { value: profile?.certificationsCount ?? 0, suffix: "", label: "certifications" },
+    { value: profile?.projectsCount ?? 20, suffix: "+", label: t.stats.projects },
     {
-      value: profile?.yearsOfExperience ?? 3,
+      value: profile?.technologiesCount ?? 15,
       suffix: "+",
-      label: "années de pratique",
+      label: t.stats.technologies,
     },
+    {
+      value: profile?.certificationsCount ?? 0,
+      suffix: "",
+      label: t.stats.certifications,
+    },
+    { value: profile?.yearsOfExperience ?? 3, suffix: "+", label: t.stats.years },
   ].filter((s) => s.value > 0);
 
   if (stats.length === 0) return null;

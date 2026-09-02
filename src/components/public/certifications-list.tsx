@@ -1,14 +1,16 @@
 import { BadgeCheck, ExternalLink } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
+import { getI18n } from "@/i18n";
 import type { Certification } from "@prisma/client";
 
-const dateFmt = new Intl.DateTimeFormat("fr-FR", {
-  month: "long",
-  year: "numeric",
-});
+export async function CertificationsList({ items }: { items: Certification[] }) {
+  const { locale, t } = await getI18n();
+  const dateFmt = new Intl.DateTimeFormat(locale === "en" ? "en-US" : "fr-FR", {
+    month: "long",
+    year: "numeric",
+  });
 
-export function CertificationsList({ items }: { items: Certification[] }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {items.map((c) => (
@@ -34,7 +36,8 @@ export function CertificationsList({ items }: { items: Certification[] }) {
               rel="noopener noreferrer"
               className="text-primary mt-4 inline-flex items-center gap-1.5 text-sm hover:underline"
             >
-              Voir la certification <ExternalLink className="size-3.5" />
+              {t.certificationsPage.viewCredential}
+              <ExternalLink className="size-3.5" />
             </a>
           )}
         </Card>

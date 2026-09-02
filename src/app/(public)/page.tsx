@@ -50,7 +50,10 @@ export default async function HomePage() {
               />
             </FadeUp>
             <div className="mt-10">
-              <SkillGroups groups={skillGroups.slice(0, 2)} />
+              <SkillGroups
+                groups={skillGroups.slice(0, 2)}
+                labels={t.skillCategories}
+              />
             </div>
             <Button asChild variant="link" className="mt-6 px-0 font-mono">
               <Link href="/skills">
@@ -74,7 +77,7 @@ export default async function HomePage() {
               <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {featured.map((p, i) => (
                   <RevealItem key={p.id}>
-                    <ProjectCard project={p} index={i} />
+                    <ProjectCard project={p} index={i} t={t.project} />
                   </RevealItem>
                 ))}
               </Reveal>

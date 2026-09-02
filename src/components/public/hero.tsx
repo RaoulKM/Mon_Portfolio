@@ -26,9 +26,7 @@ export function Hero({
   const reduce = useReducedMotion();
   const name = profile?.fullName ?? siteConfig.name;
   const headline = profile?.headline ?? t.hero.eyebrowRoles[0];
-  const shortBio =
-    profile?.shortBio ??
-    "Je conçois des applications web modernes, des SaaS et des solutions numériques évolutives.";
+  const shortBio = profile?.shortBio ?? t.hero.shortBio;
   const initials = name
     .split(" ")
     .map((w) => w[0])
@@ -63,7 +61,7 @@ export function Hero({
               {...fade(0.05)}
               className="mono-eyebrow flex items-center gap-2"
             >
-              <span className="text-terminal-dim">$</span> whoami
+              <span className="text-terminal-dim">$</span> {t.hero.whoami}
             </motion.p>
 
             <motion.h1

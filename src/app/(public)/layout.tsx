@@ -24,7 +24,7 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
       <CursorGlow />
       <PageViewTracker />
 
-      <Navbar cvUrl={cvUrl} locale={locale} nav={t.nav} cvLabel={t.common.cv} />
+      <Navbar cvUrl={cvUrl} locale={locale} t={t} />
       <main id="content" className="relative flex-1">
         {children}
       </main>
@@ -39,8 +39,7 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
           profile?.whatsappNumber,
           profile?.whatsappMessage,
         )}
-        t={t.footer}
-        nav={t.nav}
+        t={t}
       />
     </div>
   );

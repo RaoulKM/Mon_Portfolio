@@ -18,22 +18,36 @@ export const fr = {
     contactMe: "Me contacter",
     writeMessage: "Écrire un message",
     viewSite: "Voir le site",
+    backHome: "Retour à l'accueil",
     backToTop: "Haut de page",
     skipToContent: "Aller au contenu",
+    language: "Langue",
+    toggleTheme: "Basculer le thème",
     loading: "Chargement…",
     comingSoon: "Bientôt disponible.",
     all: "Tous",
     details: "détails",
-    readMore: "Lire la suite",
+    present: "aujourd'hui",
+    tagline:
+      "Applications web modernes, SaaS et solutions numériques évolutives.",
   },
   hero: {
+    whoami: "whoami",
     eyebrowRoles: [
       "Développeur Full-Stack",
       "Architecte d'applications SaaS",
       "Intégrateur d'IA",
       "Ingénieur produit",
     ],
+    shortBio:
+      "Je conçois des applications web modernes, des SaaS et des solutions numériques évolutives.",
     online: "en ligne",
+  },
+  stats: {
+    projects: "projets livrés",
+    technologies: "technologies",
+    certifications: "certifications",
+    years: "années de pratique",
   },
   sections: {
     skills: { eyebrow: "compétences", title: "Ce que je maîtrise" },
@@ -57,9 +71,112 @@ export const fr = {
     thanks: "merci de votre visite",
     rights: "Tous droits réservés.",
   },
+  about: {
+    eyebrow: "about",
+    fallbackHeadline: "Développeur Full-Stack",
+    fallbackBio:
+      "Développeur Full-Stack orienté produits numériques, SaaS, architecture logicielle et IA. J'aime construire et maintenir des applications complètes, de la base de données au déploiement.",
+    philosophy: "// philosophie",
+    objectives: "// objectifs",
+    metaDescription:
+      "Présentation, parcours académique, philosophie et objectifs de KOM MBOUME PIERRE RAOUL.",
+  },
+  skillsPage: {
+    eyebrow: "compétences",
+    title: "Stack technique",
+    description:
+      "Les technologies que j'utilise au quotidien, regroupées par domaine.",
+    metaDescription:
+      "Compétences techniques par catégorie : frontend, backend, base de données, DevOps et IA.",
+  },
+  skillCategories: {
+    FRONTEND: "Frontend",
+    BACKEND: "Backend",
+    DATABASE: "Base de données",
+    DEVOPS: "DevOps / Cloud",
+    AI: "Intelligence Artificielle",
+    MOBILE: "Mobile",
+    OTHER: "Autres",
+  },
+  projectsPage: {
+    eyebrow: "projets",
+    title: "Ce que j'ai construit",
+    description: "Filtrez par technologie pour explorer les réalisations.",
+    metaDescription:
+      "Sélection de réalisations : SaaS, applications web, mobile et expérimentations IA.",
+    all: "./tous",
+  },
+  project: {
+    kind: "projet",
+    featured: "en vedette",
+    backToList: "Tous les projets",
+    sourceCode: "Code source",
+    liveDemo: "Démo en ligne",
+    problem: "Problème",
+    solution: "Solution",
+    architecture: "Architecture",
+    challenges: "Défis techniques",
+    results: "Résultats",
+    technologies: "Technologies",
+    gallery: "Galerie",
+    notFound: "Projet introuvable",
+    status: {
+      PLANNED: "planifié",
+      IN_PROGRESS: "en cours",
+      COMPLETED: "livré",
+      MAINTENANCE: "maintenance",
+      ARCHIVED: "archivé",
+    },
+  },
+  experiencePage: {
+    eyebrow: "parcours",
+    title: "Expérience professionnelle",
+    current: "actuel",
+    metaDescription: "Parcours professionnel présenté en timeline.",
+  },
+  educationPage: {
+    eyebrow: "formation",
+    title: "Parcours académique",
+    description: "Diplômes, cursus et certifications.",
+    certificationsHeading: "// certifications",
+    allCertifications: "toutes les certifications",
+    metaDescription:
+      "Parcours académique, diplômes et certifications de KOM MBOUME PIERRE RAOUL.",
+  },
+  certificationsPage: {
+    eyebrow: "certifications",
+    title: "Accréditations",
+    viewCredential: "Voir la certification",
+    metaDescription: "Certifications et accréditations vérifiables.",
+  },
+  servicesPage: {
+    eyebrow: "services",
+    title: "Prestations",
+    description:
+      "De la conception au déploiement, un accompagnement full-stack.",
+    metaDescription:
+      "Prestations : développement web, API & backend, SaaS, UI/UX, intégration IA et DevOps.",
+  },
+  resumePage: {
+    eyebrow: "CV",
+    title: "Télécharger mon CV",
+    description: "Disponible en français et en anglais, au format PDF.",
+    fr: "CV — Français",
+    en: "CV — English",
+    metaDescription: "Télécharger le CV de KOM MBOUME PIERRE RAOUL (FR / EN).",
+  },
+  blogPage: {
+    title: "Blog",
+    description:
+      "Articles techniques sur Next.js, Laravel, l'architecture logicielle et l'IA.",
+    article: "Article",
+  },
   contact: {
+    eyebrow: "contact",
     title: "Discutons de votre projet",
     description: "Une idée, une mission, une question — écrivez-moi.",
+    metaDescription:
+      "Prise de contact pour un projet, une mission ou une collaboration.",
     name: "Nom",
     email: "Email",
     company: "Entreprise",
@@ -81,7 +198,19 @@ export const fr = {
     education: "Le parcours académique sera bientôt disponible.",
     services: "Les services seront bientôt disponibles.",
     certifications: "Les certifications seront bientôt disponibles.",
+    cv: "Le CV sera bientôt disponible au téléchargement.",
     generic: "Aucune donnée pour le moment.",
+  },
+  placeholder: {
+    building: "en cours",
+    note: "Section en cours de construction — contenu administrable disponible en Phase 2.",
+  },
+  errors: {
+    notFoundTitle: "Page introuvable",
+    notFoundText: "La page demandée n'existe pas ou a été déplacée.",
+    genericTitle: "Une erreur est survenue",
+    genericText: "Quelque chose s'est mal passé. Vous pouvez réessayer.",
+    retry: "Réessayer",
   },
 };
 

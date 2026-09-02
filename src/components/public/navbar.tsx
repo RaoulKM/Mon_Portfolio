@@ -13,19 +13,17 @@ import { LocaleSwitcher } from "@/components/public/locale-switcher";
 import type { Locale } from "@/i18n/routing";
 import type { Dictionary } from "@/i18n/dictionaries/fr";
 
-type NavDict = Dictionary["nav"];
-
 export function Navbar({
   cvUrl = "/resume",
   locale,
-  nav,
-  cvLabel = "CV",
+  t,
 }: {
   cvUrl?: string;
   locale: Locale;
-  nav: NavDict;
-  cvLabel?: string;
+  t: Dictionary;
 }) {
+  const nav = t.nav;
+  const cvLabel = t.common.cv;
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
@@ -134,8 +132,8 @@ export function Navbar({
           >
             <FileDown className="size-4" /> {cvLabel}
           </Link>
-          <LocaleSwitcher current={locale} />
-          <ThemeToggle />
+          <LocaleSwitcher current={locale} label={t.common.language} />
+          <ThemeToggle label={t.common.toggleTheme} />
           <button
             type="button"
             aria-label="Menu"

@@ -11,6 +11,7 @@ import { CertificationsList } from "@/components/public/certifications-list";
 import { FadeUp } from "@/components/motion/reveal";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getProfile, getEducation, getCertifications } from "@/lib/queries";
+import { getDictionary, getLocale, getI18n } from "@/i18n";
 
 function Paragraphs({ text }: { text: string }) {
   return (
@@ -24,26 +25,29 @@ function Paragraphs({ text }: { text: string }) {
   );
 }
 
-export const metadata: Metadata = pageMetadata({
-  path: "/about",
-  title: "À propos",
-  description:
-    "Présentation, parcours académique, philosophie et objectifs de KOM MBOUME PIERRE RAOUL.",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = getDictionary(await getLocale());
+  return pageMetadata({
+    path: "/about",
+    title: t.nav.about,
+    description: t.about.metaDescription,
+  });
+}
 
 export default async function AboutPage() {
-  const [profile, education, certifications] = await Promise.all([
+  const [profile, education, certifications, { t }] = await Promise.all([
     getProfile(),
     getEducation(),
     getCertifications(),
+    getI18n(),
   ]);
 
   return (
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Accueil", url: "/" },
-          { name: "À propos", url: "/about" },
+          { name: t.nav.home, url: "/" },
+          { name: t.nav.about, url: "/about" },
         ]}
       />
 
@@ -51,8 +55,8 @@ export default async function AboutPage() {
         <Container>
           <FadeUp>
             <SectionHeading
-              eyebrow="about"
-              title={profile?.headline ?? "Développeur Full-Stack"}
+              eyebrow={t.about.eyebrow}
+              title={profile?.headline ?? t.about.fallbackHeadline}
             />
 
             <div className="text-muted-foreground mt-6 flex flex-wrap gap-4 font-mono text-xs">
@@ -71,23 +75,18 @@ export default async function AboutPage() {
 
           <FadeUp delay={0.1}>
             <div className="mt-10 max-w-3xl text-[15px]">
-              <Paragraphs
-                text={
-                  profile?.bio ??
-                  "Développeur Full-Stack orienté produits numériques, SaaS, architecture logicielle et IA. J'aime construire et maintenir des applications complètes, de la base de données au déploiement."
-                }
-              />
+              <Paragraphs text={profile?.bio ?? t.about.fallbackBio} />
 
               {profile?.philosophy && (
                 <>
-                  <h3 className="mono-eyebrow mt-10">{"// philosophie"}</h3>
+                  <h3 className="mono-eyebrow mt-10">{t.about.philosophy}</h3>
                   <Paragraphs text={profile.philosophy} />
                 </>
               )}
 
               {profile?.objectives && (
                 <>
-                  <h3 className="mono-eyebrow mt-10">{"// objectifs"}</h3>
+                  <h3 className="mono-eyebrow mt-10">{t.about.objectives}</h3>
                   <Paragraphs text={profile.objectives} />
                 </>
               )}
@@ -102,10 +101,10 @@ export default async function AboutPage() {
             <FadeUp>
               <div className="mt-16 max-w-3xl">
                 <div className="flex items-end justify-between">
-                  <h2 className="mono-eyebrow">{"// parcours académique"}</h2>
+                  <h2 className="mono-eyebrow">{`// ${t.sections.academic}`}</h2>
                   <Button asChild variant="link" className="px-0 font-mono text-xs">
                     <Link href="/education">
-                      détails <ArrowRight />
+                      {t.common.details} <ArrowRight />
                     </Link>
                   </Button>
                 </div>
@@ -119,7 +118,7 @@ export default async function AboutPage() {
           {certifications.length > 0 && (
             <FadeUp>
               <div className="mt-14 max-w-3xl">
-                <h2 className="mono-eyebrow">{"// certifications"}</h2>
+                <h2 className="mono-eyebrow">{`// ${t.sections.certifications}`}</h2>
                 <div className="mt-6">
                   <CertificationsList items={certifications.slice(0, 4)} />
                 </div>

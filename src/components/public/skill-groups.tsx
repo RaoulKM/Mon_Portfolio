@@ -5,8 +5,15 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { EASE_OUT } from "@/lib/motion";
 import type { SkillGroup } from "@/lib/queries";
+import type { Dictionary } from "@/i18n/dictionaries/fr";
 
-export function SkillGroups({ groups }: { groups: SkillGroup[] }) {
+export function SkillGroups({
+  groups,
+  labels,
+}: {
+  groups: SkillGroup[];
+  labels: Dictionary["skillCategories"];
+}) {
   const reduce = useReducedMotion();
 
   return (
@@ -22,7 +29,7 @@ export function SkillGroups({ groups }: { groups: SkillGroup[] }) {
           <Card className="hover:border-accent/40 h-full p-6 transition-colors">
             <h3 className="flex items-center gap-2 font-mono text-sm">
               <span className="text-terminal-dim">{String(gi + 1).padStart(2, "0")}</span>
-              <span className="text-accent">{group.label}</span>
+              <span className="text-accent">{labels[group.category]}</span>
             </h3>
             <ul className="mt-5 space-y-4">
               {group.skills.map((skill, si) => {

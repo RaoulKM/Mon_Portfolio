@@ -7,8 +7,15 @@ import { cn } from "@/lib/utils";
 import { ProjectCard } from "@/components/public/project-card";
 import { EmptyState } from "@/components/public/empty-state";
 import type { ProjectListItem } from "@/lib/queries";
+import type { Dictionary } from "@/i18n/dictionaries/fr";
 
-export function ProjectsExplorer({ projects }: { projects: ProjectListItem[] }) {
+export function ProjectsExplorer({
+  projects,
+  t,
+}: {
+  projects: ProjectListItem[];
+  t: Dictionary;
+}) {
   const reduce = useReducedMotion();
   const technologies = React.useMemo(() => {
     const names = new Set<string>();
@@ -23,7 +30,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectListItem[] }) 
     : projects;
 
   if (projects.length === 0) {
-    return <EmptyState message="Les projets seront bientôt disponibles." />;
+    return <EmptyState message={t.empty.projects} />;
   }
 
   return (
@@ -31,7 +38,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectListItem[] }) 
       {technologies.length > 0 && (
         <div className="mb-8 flex flex-wrap gap-2 font-mono text-xs">
           <Chip active={active === null} onClick={() => setActive(null)}>
-            ./tous
+            {t.projectsPage.all}
           </Chip>
           {technologies.map((name) => (
             <Chip
@@ -56,7 +63,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectListItem[] }) 
               exit={reduce ? undefined : { opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.3) }}
             >
-              <ProjectCard project={p} index={i} />
+              <ProjectCard project={p} index={i} t={t.project} />
             </motion.div>
           ))}
         </AnimatePresence>

@@ -20,6 +20,7 @@ import {
   getAdjacentProjects,
   incrementProjectViews,
 } from "@/lib/queries";
+import { getDictionary, getLocale, getI18n } from "@/i18n";
 
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();
@@ -31,7 +32,9 @@ export async function generateMetadata({
 }: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  if (!project) return { title: "Projet introuvable" };
+  if (!project) {
+    return { title: getDictionary(await getLocale()).project.notFound };
+  }
 
   const title = project.seoTitle || project.title;
   const description = project.seoDescription || project.shortDescription;
@@ -49,19 +52,19 @@ export async function generateMetadata({
   };
 }
 
-const DETAIL_SECTIONS = [
-  ["problem", "Problème"],
-  ["solution", "Solution"],
-  ["architecture", "Architecture"],
-  ["challenges", "Défis techniques"],
-  ["results", "Résultats"],
+const DETAIL_KEYS = [
+  "problem",
+  "solution",
+  "architecture",
+  "challenges",
+  "results",
 ] as const;
 
 export default async function ProjectDetailPage({
   params,
 }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
-  const project = await getProjectBySlug(slug);
+  const [project, { t }] = await Promise.all([getProjectBySlug(slug), getI18n()]);
   if (!project) notFound();
 
   const { prev, next } = await getAdjacentProjects(slug);
@@ -73,8 +76,8 @@ export default async function ProjectDetailPage({
       <ProjectJsonLd project={project} />
       <BreadcrumbJsonLd
         items={[
-          { name: "Accueil", url: "/" },
-          { name: "Projets", url: "/projects" },
+          { name: t.nav.home, url: "/" },
+          { name: t.nav.projects, url: "/projects" },
           { name: project.title, url: `/projects/${project.slug}` },
         ]}
       />
@@ -87,7 +90,7 @@ export default async function ProjectDetailPage({
       <Container className="max-w-4xl">
         <Button asChild variant="link" className="mb-6 px-0">
           <Link href="/projects">
-            <ArrowLeft /> Tous les projets
+            <ArrowLeft /> {t.project.backToList}
           </Link>
         </Button>
 
@@ -106,7 +109,7 @@ export default async function ProjectDetailPage({
               entityId={project.id}
               className="border-border hover:bg-muted inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium"
             >
-              <GithubIcon className="size-4" /> Code source
+              <GithubIcon className="size-4" /> {t.project.sourceCode}
             </TrackedLink>
           )}
           {project.liveUrl && (
@@ -116,7 +119,7 @@ export default async function ProjectDetailPage({
               entityId={project.id}
               className="bg-primary text-primary-foreground inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium"
             >
-              <ExternalLink className="size-4" /> Démo en ligne
+              <ExternalLink className="size-4" /> {t.project.liveDemo}
             </TrackedLink>
           )}
         </div>
@@ -142,12 +145,12 @@ export default async function ProjectDetailPage({
           ))}
         </article>
 
-        {DETAIL_SECTIONS.map(([key, label]) => {
+        {DETAIL_KEYS.map((key) => {
           const value = project[key];
           if (!value) return null;
           return (
             <section key={key} className="mt-10">
-              <h2 className="text-xl font-semibold">{label}</h2>
+              <h2 className="text-xl font-semibold">{t.project[key]}</h2>
               <div className="mt-3 space-y-3 text-[15px] leading-relaxed">
                 {value.split(/\n{2,}/).map((p, i) => (
                   <p key={i} className="text-pretty">
@@ -161,11 +164,11 @@ export default async function ProjectDetailPage({
 
         {project.technologies.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-xl font-semibold">Technologies</h2>
+            <h2 className="text-xl font-semibold">{t.project.technologies}</h2>
             <div className="mt-3 flex flex-wrap gap-2">
-              {project.technologies.map((t) => (
-                <Badge key={t.id} variant="outline">
-                  {t.name}
+              {project.technologies.map((tech) => (
+                <Badge key={tech.id} variant="outline">
+                  {tech.name}
                 </Badge>
               ))}
             </div>
@@ -174,7 +177,7 @@ export default async function ProjectDetailPage({
 
         {project.gallery.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-xl font-semibold">Galerie</h2>
+            <h2 className="text-xl font-semibold">{t.project.gallery}</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {project.gallery.map((src, i) => (
                 <div

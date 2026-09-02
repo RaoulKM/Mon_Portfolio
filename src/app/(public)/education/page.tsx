@@ -11,35 +11,39 @@ import { EmptyState } from "@/components/public/empty-state";
 import { FadeUp } from "@/components/motion/reveal";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getEducation, getCertifications } from "@/lib/queries";
+import { getDictionary, getLocale, getI18n } from "@/i18n";
 
-export const metadata: Metadata = pageMetadata({
-  path: "/education",
-  title: "Formation",
-  description:
-    "Parcours académique, diplômes et certifications de KOM MBOUME PIERRE RAOUL.",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const t = getDictionary(await getLocale());
+  return pageMetadata({
+    path: "/education",
+    title: t.nav.education,
+    description: t.educationPage.metaDescription,
+  });
+}
 
 export default async function EducationPage() {
-  const [education, certifications] = await Promise.all([
+  const [education, certifications, { t }] = await Promise.all([
     getEducation(),
     getCertifications(),
+    getI18n(),
   ]);
 
   return (
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Accueil", url: "/" },
-          { name: "Formation", url: "/education" },
+          { name: t.nav.home, url: "/" },
+          { name: t.nav.education, url: "/education" },
         ]}
       />
       <Section>
         <Container className="max-w-3xl">
           <FadeUp>
             <SectionHeading
-              eyebrow="formation"
-              title="Parcours académique"
-              description="Diplômes, cursus et certifications."
+              eyebrow={t.educationPage.eyebrow}
+              title={t.educationPage.title}
+              description={t.educationPage.description}
             />
           </FadeUp>
 
@@ -47,17 +51,19 @@ export default async function EducationPage() {
             {education.length > 0 ? (
               <EducationList items={education} />
             ) : (
-              <EmptyState message="Le parcours académique sera bientôt disponible." />
+              <EmptyState message={t.empty.education} />
             )}
           </div>
 
           {certifications.length > 0 && (
             <div className="mt-16">
-              <h2 className="mono-eyebrow mb-6">{"// certifications"}</h2>
+              <h2 className="mono-eyebrow mb-6">
+                {t.educationPage.certificationsHeading}
+              </h2>
               <CertificationsList items={certifications} />
               <Button asChild variant="link" className="mt-4 px-0 font-mono">
                 <Link href="/certifications">
-                  toutes les certifications <ArrowRight />
+                  {t.educationPage.allCertifications} <ArrowRight />
                 </Link>
               </Button>
             </div>
