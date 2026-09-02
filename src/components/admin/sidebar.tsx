@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   User,
@@ -19,6 +20,7 @@ import {
   Settings,
   Users,
   ScrollText,
+  Terminal,
   type LucideIcon,
 } from "lucide-react";
 
@@ -48,15 +50,19 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="border-border bg-card hidden w-64 shrink-0 border-r md:block">
-      <div className="border-border flex h-16 items-center border-b px-6 font-bold tracking-tight">
-        Admin
+    <aside className="border-border bg-card/60 hidden w-64 shrink-0 border-r backdrop-blur md:block">
+      <div className="border-border flex h-16 items-center gap-2 border-b px-6">
+        <span className="border-accent/40 bg-accent/10 text-accent flex size-8 items-center justify-center rounded-md border">
+          <Terminal className="size-4" />
+        </span>
+        <span className="font-mono font-bold tracking-tight">admin</span>
       </div>
+
       <nav className="space-y-6 p-4">
         {adminNav.map((section, i) => (
           <div key={i} className="space-y-1">
             {section.group && (
-              <p className="text-muted-foreground px-2 text-xs font-semibold tracking-wider uppercase">
+              <p className="text-terminal-dim px-2 font-mono text-[10px] tracking-[0.2em] uppercase">
                 {section.group}
               </p>
             )}
@@ -69,14 +75,21 @@ export function AdminSidebar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 rounded-md px-2 py-2 text-sm transition-colors",
+                    "relative flex items-center gap-3 rounded-md px-2.5 py-2 font-mono text-[13px] transition-colors",
                     active
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-muted",
+                      ? "text-accent"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  <Icon className="size-4 shrink-0" />
-                  {item.label}
+                  {active && (
+                    <motion.span
+                      layoutId="admin-nav-active"
+                      className="bg-accent/10 border-accent/30 absolute inset-0 rounded-md border shadow-[0_0_18px_-6px_var(--glow-color)]"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  )}
+                  <Icon className="relative size-4 shrink-0" />
+                  <span className="relative">{item.label}</span>
                 </Link>
               );
             })}

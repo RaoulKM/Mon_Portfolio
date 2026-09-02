@@ -11,12 +11,12 @@ export function AdminTable({
   className?: string;
 }) {
   return (
-    <div className="border-border overflow-x-auto rounded-xl border">
+    <div className="border-border bg-card/50 overflow-x-auto rounded-xl border backdrop-blur-sm">
       <table className={cn("w-full text-sm", className)}>
-        <thead className="bg-muted/50 text-muted-foreground text-left text-xs uppercase tracking-wide">
+        <thead className="border-border text-terminal-dim border-b text-left font-mono text-[11px] tracking-wider uppercase">
           <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:font-medium">{head}</tr>
         </thead>
-        <tbody className="divide-border divide-y [&>tr>td]:px-4 [&>tr>td]:py-3">
+        <tbody className="divide-border divide-y [&>tr]:transition-colors [&>tr:hover]:bg-muted/40 [&>tr>td]:px-4 [&>tr>td]:py-3">
           {children}
         </tbody>
       </table>

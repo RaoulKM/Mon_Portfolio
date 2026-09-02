@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const inputCls =
-  "w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60";
+  "w-full rounded-md border border-input bg-background/60 px-3 py-2 text-sm outline-none transition-colors focus-visible:border-accent/60 focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60";
 
 function FieldWrapper({
   label,
@@ -23,8 +23,8 @@ function FieldWrapper({
 }) {
   return (
     <div className="space-y-1.5">
-      <label htmlFor={name} className="text-sm font-medium">
-        {label} {required && <span className="text-destructive">*</span>}
+      <label htmlFor={name} className="font-mono text-[13px] font-medium">
+        {label} {required && <span className="text-accent">*</span>}
       </label>
       {children}
       {hint && !error?.length && (

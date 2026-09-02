@@ -8,9 +8,12 @@ export function AdminPageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+        <p className="mono-eyebrow">
+          <span className="text-terminal-dim">~/admin</span> / {title.toLowerCase()}
+        </p>
+        <h1 className="mt-1.5 text-2xl font-bold tracking-tight">{title}</h1>
         {description && (
           <p className="text-muted-foreground mt-1 text-sm">{description}</p>
         )}
@@ -22,7 +25,8 @@ export function AdminPageHeader({
 
 export function AdminPlaceholder({ note }: { note?: string }) {
   return (
-    <div className="border-border text-muted-foreground rounded-lg border border-dashed p-10 text-center text-sm">
+    <div className="terminal-frame text-muted-foreground p-10 text-center font-mono text-sm">
+      <span className="text-terminal-dim">$</span>{" "}
       {note ?? "Interface CRUD à implémenter en Phase 3."}
     </div>
   );

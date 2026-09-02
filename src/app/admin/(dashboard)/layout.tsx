@@ -9,7 +9,13 @@ export default async function DashboardLayout({
   const user = await requireUser();
 
   return (
-    <div className="flex min-h-screen">
+    <div className="relative flex min-h-screen">
+      {/* subtle backdrop */}
+      <div
+        aria-hidden
+        className="dot-bg pointer-events-none fixed inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]"
+      />
+
       <AdminSidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <AdminTopbar email={user.email} />

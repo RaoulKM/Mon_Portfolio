@@ -2,6 +2,7 @@ import { z, ZodError } from "zod";
 
 import { rateLimit, clientIp } from "@/lib/api/rate-limit";
 import { track } from "@/lib/analytics";
+import { parseBrowser, parseDevice } from "@/lib/analytics/ua";
 import { fail, fromZodError, noContent, serverError, tooManyRequests } from "@/lib/api/response";
 
 const eventSchema = z.object({
@@ -28,7 +29,12 @@ export async function POST(req: Request) {
 
   try {
     const data = eventSchema.parse(await req.json());
-    await track(data);
+    const ua = req.headers.get("user-agent");
+    await track({
+      ...data,
+      device: parseDevice(ua),
+      browser: parseBrowser(ua),
+    });
     return noContent();
   } catch (err) {
     if (err instanceof ZodError) return fromZodError(err);
