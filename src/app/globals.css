@@ -1,0 +1,136 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* -------------------------------------------------------------------------
+   Design System (spec §31)
+   Primary: Royal Blue · Secondary: Classic Blue · Accent: dynamic cyan
+   Typography: Montserrat · Dark mode: class strategy
+-------------------------------------------------------------------------- */
+
+:root {
+  --radius: 0.625rem;
+
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(222 47% 11%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(222 47% 11%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(222 47% 11%);
+
+  --primary: hsl(226 71% 45%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  --secondary: hsl(210 40% 96%);
+  --secondary-foreground: hsl(205 79% 28%);
+
+  --muted: hsl(210 40% 96%);
+  --muted-foreground: hsl(215 16% 47%);
+
+  --accent: hsl(199 89% 48%);
+  --accent-foreground: hsl(0 0% 100%);
+
+  --destructive: hsl(0 72% 51%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  --border: hsl(214 32% 91%);
+  --input: hsl(214 32% 91%);
+  --ring: hsl(226 71% 45%);
+
+  --chart-1: hsl(226 71% 45%);
+  --chart-2: hsl(199 89% 48%);
+  --chart-3: hsl(205 79% 28%);
+  --chart-4: hsl(160 84% 39%);
+  --chart-5: hsl(43 96% 56%);
+}
+
+.dark {
+  --background: hsl(222 47% 7%);
+  --foreground: hsl(210 40% 96%);
+
+  --card: hsl(222 47% 10%);
+  --card-foreground: hsl(210 40% 96%);
+  --popover: hsl(222 47% 10%);
+  --popover-foreground: hsl(210 40% 96%);
+
+  --primary: hsl(222 82% 66%);
+  --primary-foreground: hsl(222 47% 11%);
+
+  --secondary: hsl(217 33% 17%);
+  --secondary-foreground: hsl(210 40% 96%);
+
+  --muted: hsl(217 33% 17%);
+  --muted-foreground: hsl(215 20% 65%);
+
+  --accent: hsl(199 89% 55%);
+  --accent-foreground: hsl(222 47% 11%);
+
+  --destructive: hsl(0 63% 55%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  --border: hsl(217 33% 20%);
+  --input: hsl(217 33% 22%);
+  --ring: hsl(222 82% 66%);
+
+  --chart-1: hsl(222 82% 66%);
+  --chart-2: hsl(199 89% 55%);
+  --chart-3: hsl(205 79% 55%);
+  --chart-4: hsl(160 74% 50%);
+  --chart-5: hsl(43 90% 62%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

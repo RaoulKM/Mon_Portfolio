@@ -1,0 +1,27 @@
+# Optional local infrastructure (spec §55).
+# The app also runs against any locally-installed PostgreSQL — this file is
+# only a convenience for contributors without one.
+#
+#   docker compose up -d
+#
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mon_portfolio_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mon_portfolio
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
