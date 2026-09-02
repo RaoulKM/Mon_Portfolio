@@ -67,6 +67,7 @@ export const adminNav = [
     group: "Contenu",
     items: [
       { label: "Profil", href: "/admin/profile", icon: "User" },
+      { label: "CV", href: "/admin/cv", icon: "FileText" },
       { label: "Projets", href: "/admin/projects", icon: "FolderGit2" },
       { label: "Compétences", href: "/admin/skills", icon: "Sparkles" },
       { label: "Expériences", href: "/admin/experience", icon: "Briefcase" },

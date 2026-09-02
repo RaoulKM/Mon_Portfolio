@@ -109,22 +109,13 @@ export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
             <TextField label="Téléphone" name="phone" defaultValue={profile?.phone} />
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            <ImageField
-              label="CV — Français (PDF)"
-              name="cvUrlFr"
-              accept="application/pdf,image/*"
-              defaultValue={profile?.cvUrlFr}
-              error={errors.cvUrlFr}
-            />
-            <ImageField
-              label="CV — Anglais (PDF)"
-              name="cvUrlEn"
-              accept="application/pdf,image/*"
-              defaultValue={profile?.cvUrlEn}
-              error={errors.cvUrlEn}
-            />
-          </div>
+          <p className="text-muted-foreground text-xs">
+            Les fichiers du CV (FR / EN) se gèrent dans la page{" "}
+            <a href="/admin/cv" className="text-accent hover:underline">
+              CV
+            </a>
+            .
+          </p>
 
           <div className="grid gap-6 sm:grid-cols-4">
             <TextField

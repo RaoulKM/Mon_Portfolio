@@ -20,7 +20,7 @@ export default async function ProfileAdminPage() {
     <>
       <AdminPageHeader
         title="Profil"
-        description="Identité, bio, coordonnées, CV et réseaux sociaux."
+        description="Identité, bio, coordonnées et réseaux sociaux."
       />
       <div className="max-w-5xl">
         <ProfileForm profile={profile} />

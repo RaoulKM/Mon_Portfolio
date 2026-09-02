@@ -21,6 +21,7 @@ import {
   Users,
   ScrollText,
   KeyRound,
+  FileText,
   type LucideIcon,
 } from "lucide-react";
 
@@ -45,6 +46,7 @@ const ICONS: Record<string, LucideIcon> = {
   Users,
   ScrollText,
   KeyRound,
+  FileText,
 };
 
 /**

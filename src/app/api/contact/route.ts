@@ -5,6 +5,7 @@ import { contactSchema } from "@/lib/validation/contact";
 import { rateLimit, clientIp } from "@/lib/api/rate-limit";
 import { created, fail, fromZodError, serverError, tooManyRequests } from "@/lib/api/response";
 import { sendEmail } from "@/lib/email";
+import { getSiteSettings } from "@/lib/queries/settings";
 import { track } from "@/lib/analytics";
 
 export async function POST(req: Request) {
@@ -34,11 +35,29 @@ export async function POST(req: Request) {
       },
     });
 
+    const settings = await getSiteSettings();
+    const notifyTo =
+      settings.contact.notificationEmail ||
+      settings.contact.contactEmail ||
+      process.env.EMAIL_FROM ||
+      "admin@localhost";
+
+    const notifyBody = [
+      `De : ${data.name} <${data.email}>`,
+      data.company ? `Société : ${data.company}` : null,
+      `Objet : ${data.subject || "(sans objet)"}`,
+      "",
+      data.message,
+    ]
+      .filter((line): line is string => line !== null)
+      .join("\n");
+
     await Promise.allSettled([
       sendEmail({
-        to: process.env.EMAIL_FROM ?? "admin@localhost",
-        subject: `Nouveau message: ${data.subject || "(sans objet)"}`,
-        text: `${data.name} <${data.email}>\n\n${data.message}`,
+        to: notifyTo,
+        replyTo: data.email,
+        subject: `Nouveau message — ${data.subject || "(sans objet)"}`,
+        text: notifyBody,
       }),
       track({ eventType: "CONTACT_SUBMIT", path: "/contact" }),
     ]);
