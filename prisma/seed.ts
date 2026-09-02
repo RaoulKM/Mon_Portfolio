@@ -1,7 +1,11 @@
-import "dotenv/config";
+import { config as loadEnv } from "dotenv";
 import { PrismaClient, type Prisma } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
+
+// Match prisma.config.ts: .env.local overrides .env so `npm run db:seed`
+// targets the same database as `prisma migrate`.
+loadEnv({ path: [".env.local", ".env"], quiet: true });
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
