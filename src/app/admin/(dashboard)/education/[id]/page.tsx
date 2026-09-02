@@ -21,7 +21,7 @@ export default async function EditEducationPage({
   return (
     <>
       <AdminPageHeader title={education.degree} description="Modifier la formation." />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <EducationForm education={education} />
       </div>
     </>

@@ -22,7 +22,7 @@ export default async function ProfileAdminPage() {
         title="Profil"
         description="Identité, bio, coordonnées, CV et réseaux sociaux."
       />
-      <div className="max-w-3xl">
+      <div className="max-w-5xl">
         <ProfileForm profile={profile} />
       </div>
     </>

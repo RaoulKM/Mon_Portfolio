@@ -11,7 +11,7 @@ export default async function NewEducationPage() {
   return (
     <>
       <AdminPageHeader title="Nouvelle formation" />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <EducationForm />
       </div>
     </>

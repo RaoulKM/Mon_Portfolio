@@ -17,7 +17,7 @@ export default async function NewProjectPage() {
   return (
     <>
       <AdminPageHeader title="Nouveau projet" description="Créer un projet." />
-      <div className="max-w-3xl">
+      <div className="max-w-5xl">
         <ProjectForm technologies={technologies} categories={categories} />
       </div>
     </>

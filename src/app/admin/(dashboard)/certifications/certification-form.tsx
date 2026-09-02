@@ -9,6 +9,7 @@ import {
   SwitchField,
 } from "@/components/admin/form/fields";
 import { ImageField } from "@/components/admin/form/image-field";
+import { CertificationPreview } from "@/components/admin/previews/certification-preview";
 import { saveCertification } from "./actions";
 
 const isoDate = (d?: Date | null) =>
@@ -27,6 +28,7 @@ export function CertificationForm({
         certification ? "Certification mise à jour." : "Certification créée."
       }
       submitLabel={certification ? "Enregistrer" : "Créer"}
+      preview={(v) => <CertificationPreview values={v} />}
     >
       {(errors) => (
         <>

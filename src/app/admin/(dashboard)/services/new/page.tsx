@@ -11,7 +11,7 @@ export default async function NewServicePage() {
   return (
     <>
       <AdminPageHeader title="Nouveau service" />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <ServiceForm />
       </div>
     </>

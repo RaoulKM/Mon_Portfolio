@@ -19,7 +19,7 @@ export default async function EditSkillPage({
   return (
     <>
       <AdminPageHeader title={skill.name} description="Modifier la compétence." />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <SkillForm skill={skill} />
       </div>
     </>

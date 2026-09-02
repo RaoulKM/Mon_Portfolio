@@ -11,7 +11,7 @@ export default async function NewCertificationPage() {
   return (
     <>
       <AdminPageHeader title="Nouvelle certification" />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <CertificationForm />
       </div>
     </>

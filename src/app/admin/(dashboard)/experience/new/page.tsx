@@ -11,7 +11,7 @@ export default async function NewExperiencePage() {
   return (
     <>
       <AdminPageHeader title="Nouvelle expérience" />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <ExperienceForm />
       </div>
     </>

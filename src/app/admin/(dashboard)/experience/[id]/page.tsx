@@ -24,7 +24,7 @@ export default async function EditExperiencePage({
         title={`${experience.position} — ${experience.company}`}
         description="Modifier l'expérience."
       />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <ExperienceForm experience={experience} />
       </div>
     </>

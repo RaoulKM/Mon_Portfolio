@@ -11,6 +11,7 @@ import {
   CheckboxGroupField,
 } from "@/components/admin/form/fields";
 import { ImageField } from "@/components/admin/form/image-field";
+import { ProjectPreview } from "@/components/admin/previews/project-preview";
 import { saveProject } from "./actions";
 
 const STATUS = [
@@ -40,6 +41,7 @@ export function ProjectForm({
       redirectTo="/admin/projects"
       successMessage={project ? "Projet mis à jour." : "Projet créé."}
       submitLabel={project ? "Enregistrer" : "Créer le projet"}
+      preview={(v) => <ProjectPreview values={v} technologies={technologies} />}
     >
       {(errors) => (
         <>

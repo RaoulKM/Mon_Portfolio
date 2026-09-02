@@ -28,7 +28,7 @@ export default async function EditProjectPage({
   return (
     <>
       <AdminPageHeader title={project.title} description="Modifier le projet." />
-      <div className="max-w-3xl">
+      <div className="max-w-5xl">
         <ProjectForm
           project={project}
           technologies={technologies}

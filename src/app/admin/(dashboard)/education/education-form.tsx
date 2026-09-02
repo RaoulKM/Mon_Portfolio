@@ -9,6 +9,7 @@ import {
   SwitchField,
 } from "@/components/admin/form/fields";
 import { ImageField } from "@/components/admin/form/image-field";
+import { EducationPreview } from "@/components/admin/previews/education-preview";
 import { saveEducation } from "./actions";
 
 const isoDate = (d?: Date | null) =>
@@ -21,6 +22,7 @@ export function EducationForm({ education }: { education?: Education | null }) {
       redirectTo="/admin/education"
       successMessage={education ? "Formation mise à jour." : "Formation créée."}
       submitLabel={education ? "Enregistrer" : "Créer"}
+      preview={(v) => <EducationPreview values={v} />}
     >
       {(errors) => (
         <>

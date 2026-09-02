@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { AdminForm } from "@/components/admin/form/admin-form";
 import { TextField, TextareaField } from "@/components/admin/form/fields";
 import { ImageField } from "@/components/admin/form/image-field";
+import { ProfilePreview } from "@/components/admin/previews/profile-preview";
 import { saveProfile } from "./actions";
 
 type ProfileWithLinks = Profile & { socialLinks: SocialLink[] };
@@ -25,6 +26,7 @@ export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
       action={saveProfile}
       successMessage="Profil enregistré."
       submitLabel="Enregistrer les modifications"
+      preview={(v) => <ProfilePreview values={v} />}
     >
       {(errors) => (
         <>

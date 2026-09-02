@@ -11,7 +11,7 @@ export default async function NewSkillPage() {
   return (
     <>
       <AdminPageHeader title="Nouvelle compétence" />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <SkillForm />
       </div>
     </>

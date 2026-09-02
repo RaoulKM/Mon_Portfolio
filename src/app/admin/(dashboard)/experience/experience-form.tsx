@@ -9,6 +9,7 @@ import {
   SwitchField,
 } from "@/components/admin/form/fields";
 import { ImageField } from "@/components/admin/form/image-field";
+import { ExperiencePreview } from "@/components/admin/previews/experience-preview";
 import { saveExperience } from "./actions";
 
 const isoDate = (d?: Date | null) =>
@@ -21,6 +22,7 @@ export function ExperienceForm({ experience }: { experience?: Experience | null 
       redirectTo="/admin/experience"
       successMessage={experience ? "Expérience mise à jour." : "Expérience créée."}
       submitLabel={experience ? "Enregistrer" : "Créer"}
+      preview={(v) => <ExperiencePreview values={v} />}
     >
       {(errors) => (
         <>

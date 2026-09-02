@@ -24,7 +24,7 @@ export default async function EditCertificationPage({
         title={certification.name}
         description="Modifier la certification."
       />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <CertificationForm certification={certification} />
       </div>
     </>

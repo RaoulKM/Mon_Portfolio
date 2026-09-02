@@ -9,6 +9,7 @@ import {
   SwitchField,
 } from "@/components/admin/form/fields";
 import { IconPicker } from "@/components/admin/form/icon-picker";
+import { ServicePreview } from "@/components/admin/previews/service-preview";
 import { saveService } from "./actions";
 
 export function ServiceForm({ service }: { service?: Service | null }) {
@@ -18,6 +19,7 @@ export function ServiceForm({ service }: { service?: Service | null }) {
       redirectTo="/admin/services"
       successMessage={service ? "Service mis à jour." : "Service créé."}
       submitLabel={service ? "Enregistrer" : "Créer"}
+      preview={(v) => <ServicePreview values={v} />}
     >
       {(errors) => (
         <>

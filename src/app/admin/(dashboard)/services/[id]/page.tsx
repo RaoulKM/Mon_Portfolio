@@ -21,7 +21,7 @@ export default async function EditServicePage({
   return (
     <>
       <AdminPageHeader title={service.title} description="Modifier le service." />
-      <div className="max-w-2xl">
+      <div className="max-w-5xl">
         <ServiceForm service={service} />
       </div>
     </>

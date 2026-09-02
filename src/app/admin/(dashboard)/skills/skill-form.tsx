@@ -11,6 +11,7 @@ import {
 } from "@/components/admin/form/fields";
 import { IconPicker } from "@/components/admin/form/icon-picker";
 import { ColorField } from "@/components/admin/form/color-field";
+import { SkillPreview } from "@/components/admin/previews/skill-preview";
 import { saveSkill } from "./actions";
 
 const CATEGORIES = [
@@ -30,6 +31,7 @@ export function SkillForm({ skill }: { skill?: Skill | null }) {
       redirectTo="/admin/skills"
       successMessage={skill ? "Compétence mise à jour." : "Compétence créée."}
       submitLabel={skill ? "Enregistrer" : "Créer"}
+      preview={(v) => <SkillPreview values={v} />}
     >
       {(errors) => (
         <>
