@@ -15,7 +15,8 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   poweredByHeader: false,
   compress: true,
-  output: "standalone",
+  // standalone server for Docker/VPS; Vercel uses its own build output.
+  output: process.env.VERCEL ? undefined : "standalone",
 
   images: {
     formats: ["image/avif", "image/webp"],

@@ -8,6 +8,8 @@ import type { NextAuthConfig } from "next-auth";
  * live in `./index.ts`, which is only imported from Node contexts.
  */
 export const authConfig = {
+  // Trust the deployment host (Vercel / reverse proxy) for callback URLs.
+  trustHost: true,
   pages: {
     signIn: "/admin/login",
   },
