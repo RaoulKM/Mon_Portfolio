@@ -7,6 +7,7 @@ import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AdminForm } from "@/components/admin/form/admin-form";
 import { TextField, TextareaField } from "@/components/admin/form/fields";
+import { ImageField } from "@/components/admin/form/image-field";
 import { saveProfile } from "./actions";
 
 type ProfileWithLinks = Profile & { socialLinks: SocialLink[] };
@@ -75,8 +76,14 @@ export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
             />
           </div>
 
+          <ImageField
+            label="Avatar"
+            name="avatarUrl"
+            defaultValue={profile?.avatarUrl}
+            error={errors.avatarUrl}
+          />
+
           <div className="grid gap-6 sm:grid-cols-2">
-            <TextField label="Avatar (URL)" name="avatarUrl" defaultValue={profile?.avatarUrl} />
             <TextField label="Localisation" name="location" defaultValue={profile?.location} />
             <TextField
               label="Disponibilité"
@@ -91,8 +98,23 @@ export function ProfileForm({ profile }: { profile: ProfileWithLinks | null }) {
               error={errors.email}
             />
             <TextField label="Téléphone" name="phone" defaultValue={profile?.phone} />
-            <TextField label="CV — FR (URL)" name="cvUrlFr" defaultValue={profile?.cvUrlFr} />
-            <TextField label="CV — EN (URL)" name="cvUrlEn" defaultValue={profile?.cvUrlEn} />
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2">
+            <ImageField
+              label="CV — Français (PDF)"
+              name="cvUrlFr"
+              accept="application/pdf,image/*"
+              defaultValue={profile?.cvUrlFr}
+              error={errors.cvUrlFr}
+            />
+            <ImageField
+              label="CV — Anglais (PDF)"
+              name="cvUrlEn"
+              accept="application/pdf,image/*"
+              defaultValue={profile?.cvUrlEn}
+              error={errors.cvUrlEn}
+            />
           </div>
 
           <div className="grid gap-6 sm:grid-cols-4">

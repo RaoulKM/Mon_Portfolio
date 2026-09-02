@@ -8,6 +8,7 @@ import {
   TextareaField,
   SwitchField,
 } from "@/components/admin/form/fields";
+import { ImageField } from "@/components/admin/form/image-field";
 import { saveCertification } from "./actions";
 
 const isoDate = (d?: Date | null) =>
@@ -72,17 +73,18 @@ export function CertificationForm({
               defaultValue={certification?.credentialUrl}
             />
             <TextField
-              label="Image du certificat (URL)"
-              name="certificateImage"
-              defaultValue={certification?.certificateImage}
-            />
-            <TextField
               label="Ordre d'affichage"
               name="displayOrder"
               type="number"
               defaultValue={certification?.displayOrder ?? 0}
             />
           </div>
+          <ImageField
+            label="Image du certificat"
+            name="certificateImage"
+            defaultValue={certification?.certificateImage}
+            error={errors.certificateImage}
+          />
           <TextareaField
             label="Description"
             name="description"

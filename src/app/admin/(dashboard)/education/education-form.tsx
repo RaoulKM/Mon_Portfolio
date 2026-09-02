@@ -8,6 +8,7 @@ import {
   TextareaField,
   SwitchField,
 } from "@/components/admin/form/fields";
+import { ImageField } from "@/components/admin/form/image-field";
 import { saveEducation } from "./actions";
 
 const isoDate = (d?: Date | null) =>
@@ -41,7 +42,7 @@ export function EducationForm({ education }: { education?: Education | null }) {
             />
             <TextField label="Domaine" name="field" defaultValue={education?.field} />
             <TextField label="Lieu" name="location" defaultValue={education?.location} />
-            <TextField label="Logo (URL)" name="logo" defaultValue={education?.logo} />
+            <ImageField label="Logo" name="logo" defaultValue={education?.logo} error={errors.logo} />
             <TextField
               label="Début"
               name="startDate"

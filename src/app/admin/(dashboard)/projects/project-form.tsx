@@ -10,6 +10,7 @@ import {
   SwitchField,
   CheckboxGroupField,
 } from "@/components/admin/form/fields";
+import { ImageField } from "@/components/admin/form/image-field";
 import { saveProject } from "./actions";
 
 const STATUS = [
@@ -96,20 +97,25 @@ export function ProjectForm({
           <TextareaField label="Résultats" name="results" defaultValue={project?.results} />
 
           <div className="grid gap-6 sm:grid-cols-2">
-            <TextField
-              label="Image de couverture (URL)"
+            <ImageField
+              label="Image de couverture"
               name="coverImage"
               defaultValue={project?.coverImage}
               error={errors.coverImage}
             />
-            <TextField label="Lien GitHub" name="githubUrl" defaultValue={project?.githubUrl} />
-            <TextField label="Lien démo" name="liveUrl" defaultValue={project?.liveUrl} />
-            <TextField
-              label="Galerie (URLs, une par ligne ou séparées par virgule)"
-              name="gallery"
-              defaultValue={project?.gallery.join(", ")}
-            />
+            <div className="grid gap-6">
+              <TextField label="Lien GitHub" name="githubUrl" defaultValue={project?.githubUrl} />
+              <TextField label="Lien démo" name="liveUrl" defaultValue={project?.liveUrl} />
+            </div>
           </div>
+
+          <ImageField
+            label="Galerie"
+            name="gallery"
+            multiple
+            defaultValue={project?.gallery.join("\n")}
+            hint="Plusieurs images — upload ou URL"
+          />
 
           <div className="grid gap-6 sm:grid-cols-3">
             <TextField

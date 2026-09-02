@@ -8,6 +8,7 @@ import {
   TextareaField,
   SwitchField,
 } from "@/components/admin/form/fields";
+import { ImageField } from "@/components/admin/form/image-field";
 import { saveExperience } from "./actions";
 
 const isoDate = (d?: Date | null) =>
@@ -40,7 +41,7 @@ export function ExperienceForm({ experience }: { experience?: Experience | null 
               error={errors.company}
             />
             <TextField label="Lieu" name="location" defaultValue={experience?.location} />
-            <TextField label="Logo (URL)" name="logo" defaultValue={experience?.logo} />
+            <ImageField label="Logo" name="logo" defaultValue={experience?.logo} error={errors.logo} />
             <TextField
               label="Début"
               name="startDate"
