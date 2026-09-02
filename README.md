@@ -55,6 +55,27 @@ Spécification complète : [`docs/spec_portfolio.md`](docs/spec_portfolio.md).
 > Testimonials, blog, utilisateurs, audit-logs (lecture) et recherche globale ⌘K
 > restent des placeholders (V2, §51).
 
+## Phase 4 — Analytics
+
+- [x] `src/lib/analytics/range.ts` — fenêtres aujourd'hui / 7j / 30j / 90j / 1 an
+      avec comparaison à la période précédente
+- [x] `src/lib/analytics/ua.ts` — détection appareil / navigateur ; `/api/analytics/events`
+      enregistre désormais `device` + `browser`
+- [x] `src/lib/queries/analytics.ts` — KPI + deltas, série temporelle (`date_trunc`),
+      pages les plus vues, projets les plus consultés, répartition interactions & appareils
+- [x] `src/components/charts` — Recharts : `TrendArea`, `InteractionsBar`, `DeviceDonut`
+- [x] `/admin/analytics` — filtre temporel, 5 cartes KPI, graphe de trafic, tops, donut
+- [x] `/admin/dashboard` retravaillé (StatCard count-up + tendance 30 j)
+- [x] Design du dashboard admin aligné sur l'identité retro-tech
+
+## Design
+
+Identité **retro-tech immersive** (dark-first « CRT ») : grilles, cadres terminal,
+scanlines, halos, JetBrains Mono. Primitives `src/components/motion` (Reveal,
+Typewriter, Counter, Marquee, Magnetic, TiltCard) + `src/components/retro`
+(backdrop, cursor glow) + transition de route (`(public)/template.tsx`). Tout
+respecte `prefers-reduced-motion`.
+
 ## Démarrage
 
 ```bash
