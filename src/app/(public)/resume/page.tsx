@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo/metadata";
 import { FileDown } from "lucide-react";
 
 import { Container, Section, SectionHeading } from "@/components/ui/section";
@@ -7,10 +9,13 @@ import { TrackedLink } from "@/components/analytics/tracked-link";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getProfile } from "@/lib/queries";
 
-export const metadata: Metadata = {
+
+export const metadata: Metadata = pageMetadata({
+  path: "/resume",
   title: "CV",
-  description: "Télécharger le CV de KOM MBOUME PIERRE RAOUL (FR / EN).",
-};
+  description:
+    "Télécharger le CV de KOM MBOUME PIERRE RAOUL (FR / EN).",
+});
 
 export default async function ResumePage() {
   const profile = await getProfile();

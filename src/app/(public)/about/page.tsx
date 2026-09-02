@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo/metadata";
 import { MapPin, CircleDot } from "lucide-react";
 
 import { Container, Section, SectionHeading } from "@/components/ui/section";
@@ -7,11 +9,6 @@ import { FadeUp } from "@/components/motion/reveal";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getProfile } from "@/lib/queries";
 
-export const metadata: Metadata = {
-  title: "À propos",
-  description:
-    "Présentation, parcours, philosophie et objectifs de KOM MBOUME PIERRE RAOUL.",
-};
 
 function Paragraphs({ text }: { text: string }) {
   return (
@@ -24,6 +21,13 @@ function Paragraphs({ text }: { text: string }) {
     </>
   );
 }
+
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
+  title: "À propos",
+  description:
+    "Présentation, parcours, philosophie et objectifs de KOM MBOUME PIERRE RAOUL.",
+});
 
 export default async function AboutPage() {
   const profile = await getProfile();

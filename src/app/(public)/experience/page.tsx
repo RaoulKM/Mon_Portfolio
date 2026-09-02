@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 
+import { pageMetadata } from "@/lib/seo/metadata";
+
 import { Container, Section, SectionHeading } from "@/components/ui/section";
 import { ExperienceTimeline } from "@/components/public/experience-timeline";
 import { EmptyState } from "@/components/public/empty-state";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getExperiences } from "@/lib/queries";
 
-export const metadata: Metadata = {
+
+export const metadata: Metadata = pageMetadata({
+  path: "/experience",
   title: "Expérience",
-  description: "Parcours professionnel présenté en timeline.",
-};
+  description:
+    "Parcours professionnel présenté en timeline.",
+});
 
 export default async function ExperiencePage() {
   const experiences = await getExperiences();

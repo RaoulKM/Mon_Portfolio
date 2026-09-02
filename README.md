@@ -68,6 +68,24 @@ Spécification complète : [`docs/spec_portfolio.md`](docs/spec_portfolio.md).
 - [x] `/admin/dashboard` retravaillé (StatCard count-up + tendance 30 j)
 - [x] Design du dashboard admin aligné sur l'identité retro-tech
 
+## Phase 5 — SEO & Performance
+
+- [x] Métadonnées pilotées par la BDD : `getSiteSettings()` alimente le
+      `generateMetadata` racine (titre, description, mots-clés, image OG)
+- [x] `pageMetadata()` — canonical + Open Graph + Twitter cohérents sur toutes
+      les pages publiques
+- [x] Images OG dynamiques : `/opengraph-image` (carte du site) et
+      `/projects/[slug]/opengraph-image` (par projet) via `next/og`
+- [x] `manifest.webmanifest`, `icon` + `apple-icon` générés (`next/og`)
+- [x] JSON-LD : Person, WebSite, BreadcrumbList, CreativeWork
+- [x] `sitemap.xml` avec `lastModified` réel des projets ; `robots.txt`
+- [x] `next.config` : AVIF/WebP, `optimizePackageImports` (lucide / framer /
+      recharts), `poweredByHeader: false`, en-têtes de sécurité + cache long
+      sur `/uploads`
+- [x] ISR 1 h sur les pages publiques (revalidation ciblée aux mutations)
+- [x] Accessibilité : lien d'évitement « Aller au contenu », `<main id>`,
+      `prefers-reduced-motion` respecté partout
+
 ## Design
 
 Identité **retro-tech immersive** (dark-first « CRT ») : grilles, cadres terminal,

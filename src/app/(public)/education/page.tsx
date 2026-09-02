@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo/metadata";
 import { GraduationCap } from "lucide-react";
 
 import { Container, Section, SectionHeading } from "@/components/ui/section";
@@ -8,10 +10,13 @@ import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { formatDateRange } from "@/lib/utils";
 import { getEducation } from "@/lib/queries";
 
-export const metadata: Metadata = {
+
+export const metadata: Metadata = pageMetadata({
+  path: "/education",
   title: "Formation",
-  description: "Diplômes et formations complémentaires.",
-};
+  description:
+    "Diplômes et formations complémentaires.",
+});
 
 export default async function EducationPage() {
   const education = await getEducation();

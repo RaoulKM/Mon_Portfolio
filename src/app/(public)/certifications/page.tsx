@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo/metadata";
 import { BadgeCheck, ExternalLink } from "lucide-react";
 
 import { Container, Section, SectionHeading } from "@/components/ui/section";
@@ -7,12 +9,15 @@ import { EmptyState } from "@/components/public/empty-state";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getCertifications } from "@/lib/queries";
 
-export const metadata: Metadata = {
-  title: "Certifications",
-  description: "Certifications et accréditations vérifiables.",
-};
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" });
+
+export const metadata: Metadata = pageMetadata({
+  path: "/certifications",
+  title: "Certifications",
+  description:
+    "Certifications et accréditations vérifiables.",
+});
 
 export default async function CertificationsPage() {
   const certifications = await getCertifications();

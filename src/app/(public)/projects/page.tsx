@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 
+import { pageMetadata } from "@/lib/seo/metadata";
+
 import { Container, Section, SectionHeading } from "@/components/ui/section";
 import { ProjectsExplorer } from "@/components/public/projects-explorer";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getPublishedProjects } from "@/lib/queries";
 
-export const metadata: Metadata = {
+
+export const metadata: Metadata = pageMetadata({
+  path: "/projects",
   title: "Projets",
   description:
     "Sélection de réalisations : SaaS, applications web, mobile et expérimentations IA.",
-};
+});
 
 export default async function ProjectsPage() {
   const projects = await getPublishedProjects();

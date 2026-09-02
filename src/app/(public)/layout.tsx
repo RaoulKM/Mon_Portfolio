@@ -15,12 +15,21 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
 
   return (
     <div className="scanlines relative flex min-h-full flex-col">
+      <a
+        href="#content"
+        className="bg-accent text-accent-foreground focus:ring-ring sr-only rounded-md px-4 py-2 font-mono text-sm focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:ring-2"
+      >
+        Aller au contenu
+      </a>
+
       <RetroBackdrop />
       <CursorGlow />
       <PageViewTracker />
 
       <Navbar cvUrl={profile?.cvUrlFr ?? profile?.cvUrlEn ?? "/resume"} />
-      <main className="relative flex-1">{children}</main>
+      <main id="content" className="relative flex-1">
+        {children}
+      </main>
       <Footer
         name={profile?.fullName}
         socialLinks={profile?.socialLinks ?? []}

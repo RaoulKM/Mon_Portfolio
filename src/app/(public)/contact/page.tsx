@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo/metadata";
 import { Mail, MapPin } from "lucide-react";
 
 import { BrandGlyph, WhatsappIcon } from "@/components/icons/brand";
@@ -10,11 +12,13 @@ import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { buildWhatsappUrl } from "@/lib/whatsapp";
 import { getProfile } from "@/lib/queries";
 
-export const metadata: Metadata = {
+
+export const metadata: Metadata = pageMetadata({
+  path: "/contact",
   title: "Contact",
   description:
     "Prise de contact pour un projet, une mission ou une collaboration.",
-};
+});
 
 export default async function ContactPage() {
   const profile = await getProfile();

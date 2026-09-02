@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 
+import { pageMetadata } from "@/lib/seo/metadata";
+
 import { Container, Section, SectionHeading } from "@/components/ui/section";
 import { SkillGroups } from "@/components/public/skill-groups";
 import { EmptyState } from "@/components/public/empty-state";
 import { BreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { getSkillGroups } from "@/lib/queries";
 
-export const metadata: Metadata = {
+
+export const metadata: Metadata = pageMetadata({
+  path: "/skills",
   title: "Compétences",
   description:
     "Compétences techniques par catégorie : frontend, backend, base de données, DevOps et IA.",
-};
+});
 
 export default async function SkillsPage() {
   const groups = await getSkillGroups();
