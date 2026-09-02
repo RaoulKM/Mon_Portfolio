@@ -34,6 +34,27 @@ Spécification complète : [`docs/spec_portfolio.md`](docs/spec_portfolio.md).
       sitemap dynamique
 - [x] ISR : le groupe public se revalide chaque heure
 
+## Phase 3 — Admin
+
+- [x] Boîte à outils `src/lib/admin` : `runAction()` (permission + Zod(FormData) +
+      audit log + `revalidatePath`), fabriques `makeToggle/Delete/ReorderAction`,
+      `logAudit()` → table `AuditLog` (§35)
+- [x] UI partagée : `AdminForm` (`useActionState` + toasts sonner + redirection),
+      champs de formulaire, `AdminTable`, `InlineToggle`, `DeleteButton` (`<dialog>`)
+- [x] CRUD complet (liste + création + édition + toggle publier/visible + suppression) :
+      **projets** (statut, catégorie, technologies, SEO, galerie), **compétences**,
+      **expériences**, **formations**, **certifications**, **services**
+- [x] **Profil** : enregistrement unique + liens sociaux répétables (§8, §25)
+- [x] **Paramètres** : général / SEO / réseaux / contact — `SiteSetting` (§27)
+- [x] **Messages** : onglets UNREAD/READ/ARCHIVED/SPAM + compteurs + réponse `mailto` (§19)
+- [x] **Médias** : enregistrement d'URL externe + copie + suppression (§26 — l'upload
+      direct nécessite un fournisseur de stockage)
+- [x] Dashboard : tuiles KPI réelles + panneau messages récents
+- [x] Chaque mutation : permission vérifiée, journalisée, revalidation des pages publiques
+
+> Testimonials, blog, utilisateurs, audit-logs (lecture) et recherche globale ⌘K
+> restent des placeholders (V2, §51).
+
 ## Démarrage
 
 ```bash
