@@ -9,9 +9,12 @@ import { cn } from "@/lib/utils";
 import { publicNav, siteConfig } from "@/config/site";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-export function Navbar() {
+export function Navbar({ cvUrl = "/resume" }: { cvUrl?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <header className="border-border bg-background/80 sticky top-0 z-40 border-b backdrop-blur">
@@ -27,7 +30,7 @@ export function Navbar() {
               href={item.href}
               className={cn(
                 "hover:bg-muted rounded-md px-3 py-2 text-sm transition-colors",
-                pathname === item.href && "text-primary font-medium",
+                isActive(item.href) && "text-primary font-medium",
               )}
             >
               {item.label}
@@ -37,7 +40,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <Link
-            href="/resume"
+            href={cvUrl}
             className="bg-primary text-primary-foreground hidden items-center gap-2 rounded-md px-3 py-2 text-sm font-medium sm:inline-flex"
           >
             <FileDown className="size-4" /> CV
@@ -46,6 +49,7 @@ export function Navbar() {
           <button
             type="button"
             aria-label="Menu"
+            aria-expanded={open}
             className="border-border inline-flex size-9 items-center justify-center rounded-md border md:hidden"
             onClick={() => setOpen((v) => !v)}
           >
@@ -61,7 +65,10 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="hover:bg-muted block rounded-md px-3 py-2 text-sm"
+              className={cn(
+                "hover:bg-muted block rounded-md px-3 py-2 text-sm",
+                isActive(item.href) && "text-primary font-medium",
+              )}
             >
               {item.label}
             </Link>
