@@ -3,7 +3,9 @@ import { ArrowUp, Mail, FileDown, MessageSquare } from "lucide-react";
 
 import { siteConfig, publicNav } from "@/config/site";
 import { TrackedLink } from "@/components/analytics/tracked-link";
+import { LocaleSwitcher } from "@/components/public/locale-switcher";
 import { BrandGlyph, WhatsappIcon } from "@/components/icons/brand";
+import type { Locale } from "@/i18n/routing";
 import type { Dictionary } from "@/i18n/dictionaries/fr";
 
 type SocialLink = { id: string; platform: string; url: string; icon: string | null };
@@ -31,6 +33,7 @@ export function Footer({
   socialLinks = [],
   whatsappUrl = null,
   cvUrl,
+  locale,
   t,
 }: {
   name?: string;
@@ -40,6 +43,7 @@ export function Footer({
   socialLinks?: SocialLink[];
   whatsappUrl?: string | null;
   cvUrl?: string | null;
+  locale: Locale;
   t: Dictionary;
 }) {
   const year = new Date().getFullYear();
@@ -123,7 +127,7 @@ export function Footer({
             ))}
           </div>
 
-          {/* Contact */}
+          {/* Contact + language */}
           <div>
             <p className="mono-eyebrow mb-2">{f.contact}</p>
             <Link
@@ -156,6 +160,13 @@ export function Footer({
             >
               <FileDown className="size-3.5" /> {f.downloadCv}
             </a>
+
+            <p className="mono-eyebrow mt-6 mb-2">{t.common.language}</p>
+            <LocaleSwitcher
+              current={locale}
+              label={t.common.language}
+              variant="full"
+            />
           </div>
         </div>
 

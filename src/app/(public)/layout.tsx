@@ -39,6 +39,7 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
         availability={profile?.availability}
         email={profile?.email}
         cvUrl={cvUrl}
+        locale={locale}
         socialLinks={profile?.socialLinks ?? []}
         whatsappUrl={buildWhatsappUrl(
           profile?.whatsappNumber,

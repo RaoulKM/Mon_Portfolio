@@ -197,6 +197,14 @@ export function Navbar({
               >
                 <FileDown className="size-4" /> {cvLabel}
               </a>
+              <div className="mt-4 px-3">
+                <p className="mono-eyebrow mb-2">{t.common.language}</p>
+                <LocaleSwitcher
+                  current={locale}
+                  label={t.common.language}
+                  variant="full"
+                />
+              </div>
             </div>
           </motion.nav>
         )}
